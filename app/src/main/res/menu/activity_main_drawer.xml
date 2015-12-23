@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_now"
+            android:icon="@drawable/now32"
+            android:title="อะไรใหม่ๆ"/>
+        <item
+            android:id="@+id/nav_quick"
+            android:icon="@drawable/quick32"
+            android:title="เล่นตอนนี้" />
+        <item
+            android:id="@+id/nav_play"
+            android:icon="@drawable/play32"
+            android:title="เล่นกับเพื่อน" />
+        <item
+            android:id="@+id/nav_reserve"
+            android:icon="@drawable/reserve32"
+            android:title="จองสนาม" />
+    </group>
+
+    <item android:title="ของฉัน">
+        <menu>
+            <item
+                android:id="@+id/nav_my_reserve"
+                android:icon="@drawable/myreserve32"
+                android:title="สนามที่จอง" />
+            <item
+                android:id="@+id/nav_favorite"
+                android:icon="@drawable/favorite32"
+                android:title="ถูกใจ" />
+            <item
+                android:id="@+id/nav_friend"
+                android:icon="@drawable/friend32"
+                android:title="เพื่อน" />
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/setting32"
+                android:title="ตั้งค่า" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/logout32"
+                android:title="ออกจากระบบ" />
+        </menu>
+    </item>
+
+</menu>
