@@ -36,7 +36,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity"></activity>
     </application>
 
 </manifest>

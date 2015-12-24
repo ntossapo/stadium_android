@@ -61,6 +61,7 @@
                     android:id="@+id/activity_main_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:titleTextColor="#FFFFFF"
                     android:background="#00FFFFFF"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay" >
@@ -87,13 +88,17 @@
             android:fillViewport="true"
             android:isScrollContainer="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/activity_main_recycler_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isScrollContainer="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true" />
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/activity_main_recycler_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:isScrollContainer="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true" />
+            </android.support.v4.widget.SwipeRefreshLayout>
         </android.support.v4.widget.NestedScrollView>
 
 

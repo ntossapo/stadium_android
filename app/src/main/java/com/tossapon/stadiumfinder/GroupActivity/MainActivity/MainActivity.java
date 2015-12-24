@@ -201,6 +201,7 @@ public class MainActivity extends AppCompatActivity
 //                f = WhatNewFragment.newInstance(currentSport, );
                 break;
             case R.id.nav_reserve:
+                toolbar.setTitle("จองสนาม");
                 final Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
                 AllStadiumResponse allStadiumResponse = null;
 
@@ -226,11 +227,13 @@ public class MainActivity extends AppCompatActivity
                     return;
                 }
 
+                mRecyclerView.setNestedScrollingEnabled(false);
+                mRecyclerView.setHasFixedSize(false);
+
                 mLayoutManager = new LinearLayoutManager(MainActivity.this);
                 mRecyclerView.setLayoutManager(mLayoutManager);
                 mAdapter = new ReserveAdapter(allStadiumResponse.data);
                 mRecyclerView.setAdapter(mAdapter);
-
                 break;
             case R.id.nav_play:
 //                f = PlayWithFriendFragment.newInstance(currentSport);
