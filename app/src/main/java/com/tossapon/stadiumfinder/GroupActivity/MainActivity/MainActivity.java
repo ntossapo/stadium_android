@@ -13,6 +13,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.AppModel.AllStadiumResponse;
@@ -75,7 +78,10 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.activity_main_sport_bg)
     ImageView sportBg;
 
-    android.support.v4.app.FragmentManager manager;
+    @Bind(R.id.activity_main_recycler_view)
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView.Adapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +105,6 @@ public class MainActivity extends AppCompatActivity
         Picasso.with(getApplicationContext()).load(AppUser.getInstance().picurl).into(circleImageView);
         name.setText(AppUser.getInstance().name);
 
-        manager = getSupportFragmentManager();
     }
 
     public void onSportChangeListerner(int which, View v){
@@ -220,7 +225,12 @@ public class MainActivity extends AppCompatActivity
                     Snackbar.make(drawer, "Error :" + "Something Error", Snackbar.LENGTH_LONG).show();
                     return;
                 }
-                f = ReserveFragment.newInstance(currentSport, allStadiumResponse);
+
+                mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mAdapter = new ReserveAdapter(allStadiumResponse.data);
+                mRecyclerView.setAdapter(mAdapter);
+
                 break;
             case R.id.nav_play:
 //                f = PlayWithFriendFragment.newInstance(currentSport);
@@ -230,9 +240,6 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        FragmentTransaction transaction = manager.beginTransaction();
-        transaction.replace(R.id.activity_main_container, f);
-        transaction.commit();
         progressDialog.dismiss();
 
     }
