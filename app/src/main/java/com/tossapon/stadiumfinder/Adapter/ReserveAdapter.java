@@ -2,6 +2,7 @@ package com.tossapon.stadiumfinder.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity;
 import com.tossapon.stadiumfinder.Model.Stadium;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -41,7 +44,7 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         Stadium stadium = dataSet.get(position);
         Picasso.with(context).load(stadium.image).into(holder.image);
         holder.textview.setText(stadium.describe.length() > 200 ? stadium.describe.substring(0, 199) + "  อ่านต่อ..." : stadium.describe);
@@ -51,6 +54,7 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, StadiumInformationActivity.class);
+                i.putExtra("stadium", Parcels.wrap(dataSet.get(position)));
                 context.startActivity(i);
             }
         });
