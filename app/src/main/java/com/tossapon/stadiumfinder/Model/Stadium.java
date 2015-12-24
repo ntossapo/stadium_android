@@ -9,13 +9,15 @@ import org.parceler.ParcelConstructor;
 
 @Parcel
 public class Stadium {
-    int id;
-    String name;
-    double rating;
-    int nowPlayer;
-    String describe;
-    double latitude;
-    double logitude;
+    public int id;
+    public String name;
+    public String image;
+    public double rating;
+    public int nowPlayer;
+    public String describe;
+    public double latitude;
+    public double logitude;
+
     @ParcelConstructor
     public Stadium(int id, String name, double rating, int nowPlayer, String describe, double latitude, double logitude) {
         this.id = id;

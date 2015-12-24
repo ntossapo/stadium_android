@@ -3,6 +3,7 @@ package com.tossapon.stadiumfinder.GroupActivity.MainActivity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -35,6 +36,7 @@ import com.tossapon.stadiumfinder.Network.Server;
 import com.tossapon.stadiumfinder.Util.DataLoader;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -187,27 +189,38 @@ public class MainActivity extends AppCompatActivity
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         MainInterface service = client.create(MainInterface.class);
-        Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
-        retrofit.Response<AllStadiumResponse> allStadiumResponse;
 
-        try {
-            allStadiumResponse = call.execute();
-        } catch (IOException e) {
-            Snackbar.make(drawer, "Error :" + e.getMessage(), Snackbar.LENGTH_LONG).show();
-            return;
-        }
-
-        if(allStadiumResponse == null){
-            Snackbar.make(drawer, "Error :" + "Something Error", Snackbar.LENGTH_LONG).show();
-            return;
-        }
 
         switch (currentMode){
             case R.id.nav_now:
 //                f = WhatNewFragment.newInstance(currentSport, );
                 break;
             case R.id.nav_reserve:
-//                f = ReserveFragment.newInstance(currentSport);
+                final Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
+                AllStadiumResponse allStadiumResponse = null;
+
+                try {
+                    allStadiumResponse = new AsyncTask<Void, Void , AllStadiumResponse>(){
+                        @Override
+                        protected AllStadiumResponse doInBackground(Void... params) {
+                            try {
+                                return call.execute().body();
+                            } catch (IOException e) {
+                                return null;
+                            }
+                        }
+                    }.execute().get();
+                } catch (InterruptedException e) {
+                    Snackbar.make(drawer, "Error :" + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                } catch (ExecutionException e) {
+                    Snackbar.make(drawer, "Error :" + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
+
+                if(allStadiumResponse == null){
+                    Snackbar.make(drawer, "Error :" + "Something Error", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+                f = ReserveFragment.newInstance(currentSport, allStadiumResponse);
                 break;
             case R.id.nav_play:
 //                f = PlayWithFriendFragment.newInstance(currentSport);
@@ -216,9 +229,6 @@ public class MainActivity extends AppCompatActivity
 //                f = PlayNowFragment.newInstance(currentSport);
                 break;
         }
-
-        DataLoader.getInstance().setDetail("Loading").setDetail("กำลังดาวน์โหลดข้อมูล");
-        DataLoader.getInstance().run();
 
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.activity_main_container, f);
