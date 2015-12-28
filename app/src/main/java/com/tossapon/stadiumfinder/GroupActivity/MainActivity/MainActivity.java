@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -78,6 +79,9 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.activity_main_sport_bg)
     ImageView sportBg;
 
+    @Bind(R.id.activity_main_collapse_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
     @Bind(R.id.activity_main_recycler_view)
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -104,7 +108,6 @@ public class MainActivity extends AppCompatActivity
 
         Picasso.with(getApplicationContext()).load(AppUser.getInstance().picurl).into(circleImageView);
         name.setText(AppUser.getInstance().name);
-
     }
 
     public void onSportChangeListerner(int which, View v){
@@ -201,7 +204,7 @@ public class MainActivity extends AppCompatActivity
 //                f = WhatNewFragment.newInstance(currentSport, );
                 break;
             case R.id.nav_reserve:
-                toolbar.setTitle("จองสนาม");
+                collapsingToolbarLayout.setTitle("จองสนาม");
                 final Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
                 AllStadiumResponse allStadiumResponse = null;
 

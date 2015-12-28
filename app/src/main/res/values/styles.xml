@@ -6,10 +6,22 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">#01579B</item>
         <item name="colorAccent">#03A9F4</item>
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="minimalTextForCollapsingLayout" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="NoShadowAppTheme" parent="AppTheme">
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <style name="foodRatingBar" parent="@android:style/Widget.Holo.RatingBar.Small">
+    </style>
 </resources>
