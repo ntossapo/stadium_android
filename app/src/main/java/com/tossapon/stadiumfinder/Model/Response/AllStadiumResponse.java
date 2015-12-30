@@ -1,6 +1,6 @@
-package com.tossapon.stadiumfinder.AppModel;
+package com.tossapon.stadiumfinder.Model.Response;
 
-import com.tossapon.stadiumfinder.Model.Stadium;
+import com.tossapon.stadiumfinder.Model.Basic.Stadium;
 
 import java.util.List;
 

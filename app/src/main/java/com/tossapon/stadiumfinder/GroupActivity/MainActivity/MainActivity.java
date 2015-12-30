@@ -9,7 +9,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,27 +16,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
-import com.tossapon.stadiumfinder.AppModel.AllStadiumResponse;
-import com.tossapon.stadiumfinder.AppModel.Response;
-import com.tossapon.stadiumfinder.GroupActivity.MainActivity.Fragment.PlayNowFragment;
-import com.tossapon.stadiumfinder.GroupActivity.MainActivity.Fragment.PlayWithFriendFragment;
-import com.tossapon.stadiumfinder.GroupActivity.MainActivity.Fragment.ReserveFragment;
-import com.tossapon.stadiumfinder.GroupActivity.MainActivity.Fragment.WhatNewFragment;
-import com.tossapon.stadiumfinder.Model.Reserve;
+import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
+import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
-import com.tossapon.stadiumfinder.Util.DataLoader;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -47,7 +38,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Call;
-import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
@@ -235,7 +225,7 @@ public class MainActivity extends AppCompatActivity
 
                 mLayoutManager = new LinearLayoutManager(MainActivity.this);
                 mRecyclerView.setLayoutManager(mLayoutManager);
-                mAdapter = new ReserveAdapter(allStadiumResponse.data);
+                mAdapter = new ReserveAdapter(allStadiumResponse.data, currentSportAsString);
                 mRecyclerView.setAdapter(mAdapter);
                 break;
             case R.id.nav_play:

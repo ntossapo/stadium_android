@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,9 @@ import android.widget.TextView;
 
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
-import com.tossapon.stadiumfinder.AppModel.AllStadiumResponse;
-import com.tossapon.stadiumfinder.AppModel.Response;
-import com.tossapon.stadiumfinder.Model.Stadium;
+import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
+import com.tossapon.stadiumfinder.Model.Basic.Stadium;
 
-import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.util.List;
@@ -54,12 +51,13 @@ public class ReserveFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
         Parcelable p = getArguments().getParcelable("data");
         List<Stadium> dataSet = Parcels.unwrap(p);
+        String type = getArguments().getString("sport");
         ButterKnife.bind(this, v);
 
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new ReserveAdapter(dataSet);
+        mAdapter = new ReserveAdapter(dataSet, type);
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }

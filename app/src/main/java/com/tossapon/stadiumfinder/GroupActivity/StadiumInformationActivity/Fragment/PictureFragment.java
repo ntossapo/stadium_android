@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tossapon.projectsport.R;
-import com.tossapon.stadiumfinder.Model.Stadium;
+import com.tossapon.stadiumfinder.Model.Basic.Stadium;
 
 import org.parceler.Parcels;
 
@@ -17,7 +17,9 @@ import org.parceler.Parcels;
  */
 public class PictureFragment extends Fragment {
 
-    public static Fragment newInstance(Stadium stadium) {
+    private String type;
+
+    public static Fragment newInstance(Stadium stadium, String type) {
         Bundle b = new Bundle();
         b.putParcelable("stadium", Parcels.wrap(stadium));
         Fragment f = new PictureFragment();

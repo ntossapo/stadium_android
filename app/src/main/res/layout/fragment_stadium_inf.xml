@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_width="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -10,14 +9,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
+            android:layout_margin="24dp"
             android:orientation="vertical">
             <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/frag_std_inf_rating"
                 android:layout_width="wrap_content"
                 android:max="5"
                 android:numStars="5"
                 android:stepSize="1"
                 android:isIndicator="true"
+                android:layout_marginTop="4dp"
                 android:layout_height="wrap_content"
                 style="@style/foodRatingBar" />
             <android.support.v4.widget.Space
@@ -54,6 +55,7 @@
                             android:textStyle="bold"
                             android:text="โทร"/>
                         <TextView
+                            android:id="@+id/frag_std_inf_tel"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="0.6"
@@ -88,10 +90,10 @@
                             android:textStyle="bold"
                             android:text="เว็บ"/>
                         <TextView
+                            android:id="@+id/frag_std_inf_web"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="0.6"
-                            android:textSize="10dp"
                             android:text="www.google.com"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -112,7 +114,8 @@
                         android:layout_height="60dp"
                         android:scaleType="centerInside"
                         android:layout_weight="0.2"
-                        android:src="@drawable/track_128"/>
+                        android:src="@drawable/track_128"
+                        android:id="@+id/frag_std_inf_btn_track" />
                     <LinearLayout
                         android:layout_marginLeft="6dp"
                         android:layout_width="wrap_content"
@@ -129,10 +132,10 @@
                             android:textStyle="bold"
                             android:text="นำทาง"/>
                         <TextView
+                            android:id="@+id/frag_std_inf_track"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="0.6"
-                            android:textSize="10dp"
                             android:text="www.google.com"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -164,10 +167,10 @@
                             android:textStyle="bold"
                             android:text="ค่าบริการ"/>
                         <TextView
+                            android:id="@+id/frag_std_inf_rate"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="0.6"
-                            android:textSize="10dp"
                             android:text="www.google.com"/>
                     </LinearLayout>
                 </LinearLayout>
@@ -176,16 +179,33 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="8dp" />
 
         <fragment
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:id="@+id/activity_field_information_map"
+            android:layout_height="300dp"
+            android:id="@+id/frag_std_inf_map"
             tools:context=".GroupActivity.StadiumInformationActivity.Fragment.InformationFragment"
             android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:orientation="horizontal">-->
+            <!--<ImageView-->
+                <!--android:layout_width="60dp"-->
+                <!--android:layout_height="60dp"-->
+                <!--android:src="@drawable/info_128"/>-->
+            <!--<TextView-->
+                <!--android:layout_marginLeft="6dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="qwertyuiopasdfghjklzxcvbnm"/>-->
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -223,6 +243,7 @@
                             android:textStyle="bold"
                             android:text="เวลาทำการ"/>
                         <TextView
+                            android:id="@+id/frag_std_inf_op_time"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="0.6"
@@ -234,6 +255,7 @@
                     android:layout_height="match_parent"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:id="@+id/frag_std_inf_book"
                     android:layout_weight="1">
                     <ImageView
                         android:layout_width="60dp"

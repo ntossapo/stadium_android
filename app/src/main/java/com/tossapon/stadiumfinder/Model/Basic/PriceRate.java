@@ -1,4 +1,4 @@
-package com.tossapon.stadiumfinder.Model;
+package com.tossapon.stadiumfinder.Model.Basic;
 
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;

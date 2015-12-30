@@ -1,7 +1,6 @@
 package com.tossapon.stadiumfinder.Api;
 
-import com.tossapon.stadiumfinder.AppModel.AuthResponse;
-import com.tossapon.stadiumfinder.AppModel.Response;
+import com.tossapon.stadiumfinder.Model.Response.AuthResponse;
 
 import retrofit.Call;
 import retrofit.http.Field;

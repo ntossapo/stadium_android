@@ -8,11 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -28,15 +24,13 @@ import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Api.AuthInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
-import com.tossapon.stadiumfinder.AppModel.AuthResponse;
-import com.tossapon.stadiumfinder.AppModel.Response;
+import com.tossapon.stadiumfinder.Model.Response.AuthResponse;
 import com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity;
 import com.tossapon.stadiumfinder.Network.Server;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;

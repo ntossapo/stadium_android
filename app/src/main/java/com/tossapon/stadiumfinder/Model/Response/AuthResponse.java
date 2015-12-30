@@ -1,6 +1,6 @@
-package com.tossapon.stadiumfinder.AppModel;
+package com.tossapon.stadiumfinder.Model.Response;
 
-import com.tossapon.stadiumfinder.Model.User;
+import com.tossapon.stadiumfinder.Model.Basic.User;
 
 /**
  * Created by Tossapon on 23/12/2558.

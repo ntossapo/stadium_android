@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tossapon.projectsport.R;
-import com.tossapon.stadiumfinder.AppModel.Response;
+import com.tossapon.stadiumfinder.Model.Response.Response;
 
 import org.parceler.Parcels;
 

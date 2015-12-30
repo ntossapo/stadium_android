@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tossapon.projectsport.R;
-import com.tossapon.stadiumfinder.Model.Stadium;
+import com.tossapon.stadiumfinder.Model.Basic.Stadium;
 
 import org.parceler.Parcels;
 
@@ -16,7 +16,7 @@ import org.parceler.Parcels;
  * Created by Tossapon on 24/12/2558.
  */
 public class TimeTableFragment extends Fragment {
-    public static Fragment newInstance(Stadium stadium) {
+    public static Fragment newInstance(Stadium stadium, String type) {
         Bundle b = new Bundle();
         b.putParcelable("stadium", Parcels.wrap(stadium));
         Fragment f = new TimeTableFragment();

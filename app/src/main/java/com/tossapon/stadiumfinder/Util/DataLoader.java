@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Handler;
 
-import com.tossapon.stadiumfinder.AppModel.Response;
+import com.tossapon.stadiumfinder.Model.Response.Response;
 
 /**
  * Created by Tossapon on 22/12/2558.

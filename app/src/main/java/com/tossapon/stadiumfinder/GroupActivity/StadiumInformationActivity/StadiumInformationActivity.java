@@ -9,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -17,7 +16,7 @@ import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.Fragment.InformationFragment;
 import com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.Fragment.PictureFragment;
 import com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.Fragment.TimeTableFragment;
-import com.tossapon.stadiumfinder.Model.Stadium;
+import com.tossapon.stadiumfinder.Model.Basic.Stadium;
 
 import org.parceler.Parcels;
 
@@ -44,6 +43,7 @@ public class StadiumInformationActivity extends AppCompatActivity {
     Stadium data;
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class StadiumInformationActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         data = Parcels.unwrap(getIntent().getExtras().getParcelable("stadium"));
-
+        type = getIntent().getExtras().getString("type");
         setSupportActionBar(toolbar);
         Picasso.with(StadiumInformationActivity.this).load(data.image).into(imageView);
         collapsingToolbarLayout.setTitle(data.name);
@@ -72,9 +72,9 @@ public class StadiumInformationActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             switch (position){
-                case 0 : return InformationFragment.newInstance(data);
-                case 1 : return TimeTableFragment.newInstance(data);
-                case 2 : return PictureFragment.newInstance(data);
+                case 0 : return InformationFragment.newInstance(data, type);
+                case 1 : return TimeTableFragment.newInstance(data, type);
+                case 2 : return PictureFragment.newInstance(data, type);
             }
             return null;
         }
