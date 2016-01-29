@@ -1,10 +1,10 @@
 package com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatRatingBar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +19,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.Api.GoogleServiceInterface;
 import com.tossapon.stadiumfinder.Api.StadiumInterface;
-import com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity;
+import com.tossapon.stadiumfinder.App.LatLngModule;
+import com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity;
 import com.tossapon.stadiumfinder.Model.Basic.Stadium;
+import com.tossapon.stadiumfinder.Model.Response.GoogleRoutingResponse;
 import com.tossapon.stadiumfinder.Model.Response.StadiumDetailResponse;
 import com.tossapon.stadiumfinder.Network.Server;
 
@@ -73,19 +76,74 @@ public class InformationFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         getMapInstanceAndSetup();
+        pageContentSetup();
+        setTravelTimeContent();
+
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), PreReserveActivity.class);
+                i.putExtra("stadium", Parcels.wrap(stadium));
+                i.putExtra("type", type);
+                startActivity(i);
+            }
+        });
+        return v;
+    }
+
+    private void setTravelTimeContent() {
+        double lat;
+        double lng;
+        Retrofit googleClient = new Retrofit.Builder()
+                .baseUrl(Server.ROUTE_BASEURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GoogleServiceInterface googleService = googleClient.create(GoogleServiceInterface.class);
+        if(LatLngModule.getInstance() != null) {
+            lat = LatLngModule.getInstance().latitude;
+            lng = LatLngModule.getInstance().longitude;
+        }else{
+            lat = 0;
+            lng = 0;
+        }
+        Call<GoogleRoutingResponse> callGoogleService = googleService.getRoute(lat+","+lng, stadium.latitude+","+stadium.longitude, "car");
+        callGoogleService.enqueue(new Callback<GoogleRoutingResponse>() {
+                                      @Override
+                                      public void onResponse(Response<GoogleRoutingResponse> response, Retrofit retrofit) {
+                                          GoogleRoutingResponse res = response.body();
+                                          if(res.routes.size() > 0){
+                                              if(res.routes.get(0).legs.size() > 0){
+                                                  textViewTrack.setText(res.routes.get(0).legs.get(0).duration.text);
+                                                  return;
+                                              }
+                                          }
+
+                                          textViewTrack.setText("เริ่มต้นแอปนำทาง");
+                                      }
+
+                                      @Override
+                                      public void onFailure(Throwable t) {
+//                                          Log.d(TAG, "onFailure: " + t.getMessage());
+                                      }
+                                  }
+        );
+    }
+
+    private void pageContentSetup() {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(Server.BASEURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
         StadiumInterface service = client.create(StadiumInterface.class);
         Call<StadiumDetailResponse> call = service.getStadiumDetail(stadium.id+"", type);
-        Log.d(TAG, "onCreateView: " + stadium.id + type);
+//        Log.d(TAG, "onCreateView: " + stadium.id + type);
         call.enqueue(new Callback<StadiumDetailResponse>() {
             @Override
             public void onResponse(Response<StadiumDetailResponse> response, Retrofit retrofit) {
                 StadiumDetailResponse res = response.body();
-                Log.d(TAG, String.valueOf(res.data.price.max));
-                textViewRate.setText(res.data.price.min + " - " +res.data.price.max + " ต่อ ชม.");
+//                Log.d(TAG, String.valueOf(res.data.price.max));
+                textViewRate.setText(res.data.price.min + " - " + res.data.price.max + " ต่อ ชม.");
             }
 
             @Override
@@ -97,7 +155,6 @@ public class InformationFragment extends Fragment {
         textViewTel.setText(stadium.tel);
         textViewWeb.setText(stadium.link);
         textViewOpTime.setText(stadium.time_open + " ถึง " + stadium.time_close);
-        return v;
     }
 
     private void getMapInstanceAndSetup() {
@@ -108,13 +165,14 @@ public class InformationFragment extends Fragment {
         }
 
 
-        LatLng position = new LatLng(stadium.latitude, stadium.logitude);
+        LatLng position = new LatLng(stadium.latitude, stadium.longitude);
+//        Log.d(TAG, "getMapInstanceAndSetup: "+stadium.latitude+","+stadium.longitude);
         mMap.addMarker(new MarkerOptions().position(position).title(stadium.name));
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(position)
                 .bearing(0)
                 .tilt(0)
-                .zoom(14.0f)
+                .zoom(16.0f)
                 .build();
         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), 1000, null);
     }

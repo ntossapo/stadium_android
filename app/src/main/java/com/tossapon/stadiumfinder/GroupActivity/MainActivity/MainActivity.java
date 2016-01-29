@@ -1,13 +1,21 @@
 package com.tossapon.stadiumfinder.GroupActivity.MainActivity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,9 +35,11 @@ import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
+import com.tossapon.stadiumfinder.App.LatLngModule;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
+import com.tossapon.stadiumfinder.Util.ExpansiveLayoutManager;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -42,7 +53,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
     private static final String TAG = "MainActivity";
     final String[] types = {"ฟุตบอล", "ฟุตซอล", "เทนนิส", "บาสเก็ตบอล", "เทเบิล เทนนิส", "แบดมินตัน"};
@@ -76,6 +87,10 @@ public class MainActivity extends AppCompatActivity
     RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
+    private LocationManager locationManager;
+    private String provider;
+    private Location location;
+    private boolean debug = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +112,28 @@ public class MainActivity extends AppCompatActivity
 //        navigationView.addHeaderView();
 
         Picasso.with(getApplicationContext()).load(AppUser.getInstance().picurl).into(circleImageView);
+
         name.setText(AppUser.getInstance().name);
+
+//        locationSetting();
+    }
+
+    private void locationSetting() {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        Criteria c = new Criteria();
+        provider = locationManager.getBestProvider(c, false);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        location = locationManager.getLastKnownLocation(provider);
+        LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
     }
 
     public void onSportChangeListerner(int which, View v){
@@ -223,10 +259,12 @@ public class MainActivity extends AppCompatActivity
                 mRecyclerView.setNestedScrollingEnabled(false);
                 mRecyclerView.setHasFixedSize(false);
 
-                mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
                 mRecyclerView.setLayoutManager(mLayoutManager);
                 mAdapter = new ReserveAdapter(allStadiumResponse.data, currentSportAsString);
                 mRecyclerView.setAdapter(mAdapter);
+                if(debug)
+                Log.d(TAG, "changePageFragmentAndData: data is " + mAdapter.getItemCount()+ " item");
                 break;
             case R.id.nav_play:
 //                f = PlayWithFriendFragment.newInstance(currentSport);
@@ -237,6 +275,26 @@ public class MainActivity extends AppCompatActivity
         }
 
         progressDialog.dismiss();
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
 
     }
 }

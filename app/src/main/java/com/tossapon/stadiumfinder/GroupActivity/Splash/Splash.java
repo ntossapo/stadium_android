@@ -45,7 +45,7 @@ import retrofit.Retrofit;
 
 public class Splash extends AppCompatActivity{
     private static final String TAG = "debug_Splash";
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     @Bind(R.id.splash_login_button)
     LoginButton login;

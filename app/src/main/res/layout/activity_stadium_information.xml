@@ -11,19 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        android:elevation="0dp"
-        android:fitsSystemWindows="true">
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/activity_stadium_inf_collapse_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="?attr/colorPrimary"
-            android:elevation="0dp"
             app:expandedTitleTextAppearance="@style/minimalTextForCollapsingLayout"
-            app:collapsedTitleTextAppearance="@style/minimalTextForCollapsingLayout"
-            android:fitsSystemWindows="true">
+            app:collapsedTitleTextAppearance="@style/minimalTextForCollapsingLayout">
             <ImageView
                 android:id="@+id/activity_stadium_inf_imageView"
                 android:layout_width="match_parent"
@@ -33,11 +29,8 @@
                 android:id="@+id/activity_stadium_inf_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:minHeight="?attr/actionBarSize"
-                android:background="#00FFFFFF"
-                android:elevation="0dp"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
@@ -49,17 +42,22 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/activity_stadium_inf_nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="46dp"
         android:fillViewport="true"
-        android:isScrollContainer="true"
-        android:layout_marginTop="36dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/activity_stadium_inf_pager"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        </android.support.v4.view.ViewPager>
+            android:orientation="vertical">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/activity_stadium_inf_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            </android.support.v4.view.ViewPager>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -22,6 +22,5 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="foodRatingBar" parent="@android:style/Widget.Holo.RatingBar.Small">
-    </style>
+    <style name="foodRatingBar" parent="@android:style/Widget.Holo.RatingBar.Small"></style>
 </resources>

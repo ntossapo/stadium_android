@@ -9,7 +9,8 @@ import java.util.List;
  * Created by Tossapon on 30/12/2558.
  */
 public class GoogleRoutingResponse {
-    GeocodedWaypoints geocoded_waypoints;
-    List<Routes> routes;
-    String status;
+    public List<GeocodedWaypoints> geocoded_waypoints;
+    public List<Routes> routes;
+    public String status;
+
 }

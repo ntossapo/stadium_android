@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:background="#0277bd"
+    android:layout_width="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/black_transparent_background"
+        android:layout_margin="20dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:padding="12dp"
+            android:background="#FFFFFF"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/activity_reserve_date">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/calendar_date_128"/>
+                        <TextView
+                            android:id="@+id/activity_confirm_date_tv"
+                            android:gravity="center"
+                            android:textSize="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="เลือกวัน"/>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/activity_confirm_timefrom">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/clock_128"/>
+                        <TextView
+                            android:id="@+id/activity_confirm_timefrom_tv"
+                            android:gravity="center"
+                            android:textSize="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="เลือกเวลาเริ่ม"/>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/activity_confirm_timeto">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/clock_128"/>
+                        <TextView
+                            android:id="@+id/activity_confirm_timeto_tv"
+                            android:gravity="center"
+                            android:textSize="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="เลือกเวลากลับ"/>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/activity_confirm_stadium">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:src="@drawable/location_marker_128"/>
+                        <TextView
+                            android:id="@+id/activity_confirm_stadium_tv"
+                            android:gravity="center"
+                            android:textSize="16dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="เลือกเวลากลับ"/>
+                    </LinearLayout>
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp" />
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/blue_round_button"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16dp"
+                        android:paddingLeft="26dp"
+                        android:paddingRight="26dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="จองสนาม"
+                        android:id="@+id/activity_confirm_reserve_button"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

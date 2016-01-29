@@ -23,8 +23,6 @@ public class WhatNewFragment extends Fragment {
     @Bind(R.id.fragment_list_label)
     TextView tv;
 
-    Response response;
-
     public static Fragment newInstance(int sport, Response res){
         WhatNewFragment p = new WhatNewFragment();
         Bundle b = new Bundle();

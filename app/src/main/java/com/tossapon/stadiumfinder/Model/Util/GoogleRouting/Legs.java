@@ -1,14 +1,16 @@
 package com.tossapon.stadiumfinder.Model.Util.GoogleRouting;
 
+import java.util.List;
+
 /**
  * Created by Tossapon on 30/12/2558.
  */
 public class Legs {
-    Distance distance;
-    Duration duration;
-    String end_address;
-    LtLng end_location;
-    String start_address;
-    LtLng start_location;
-    Steps steps;
+    public Distance distance;
+    public Duration duration;
+    public String end_address;
+    public LtLng end_location;
+    public String start_address;
+    public LtLng start_location;
+    public List<Steps> steps;
 }

@@ -1,5 +1,4 @@
 <resources>>
 
-    <style name="foodRatingBar" parent="@android:style/Widget.Material.Light.RatingBar.Small">
-    </style>
+    <style name="foodRatingBar" parent="@android:style/Widget.Material.Light.RatingBar.Small"></style>
 </resources>

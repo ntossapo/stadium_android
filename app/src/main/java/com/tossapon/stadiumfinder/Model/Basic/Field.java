@@ -9,15 +9,31 @@ import org.parceler.ParcelConstructor;
 @Parcel
 public class Field {
     int id;
-    int name;
+    String name;
     int stadium_id;
-    int type;
+    String type;
 
     @ParcelConstructor
-    public Field(int id, int name, int stadium_id, int type) {
+    public Field(int id, String name, int stadium_id, String type) {
         this.id = id;
         this.name = name;
         this.stadium_id = stadium_id;
         this.type = type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getStadium_id() {
+        return stadium_id;
+    }
+
+    public String getType() {
+        return type;
     }
 }

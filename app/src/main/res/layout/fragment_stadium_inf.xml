@@ -2,286 +2,288 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-            <android.support.v7.widget.AppCompatRatingBar
-                android:id="@+id/frag_std_inf_rating"
-                android:layout_width="wrap_content"
-                android:max="5"
-                android:numStars="5"
-                android:stepSize="1"
-                android:isIndicator="true"
-                android:layout_marginTop="4dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/foodRatingBar" />
-            <android.support.v4.widget.Space
-                android:layout_width="match_parent"
-                android:layout_height="20dp" />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_height="match_parent"
+                android:layout_margin="24dp"
+                android:orientation="vertical">
+                <android.support.v7.widget.AppCompatRatingBar
+                    android:id="@+id/frag_std_inf_rating"
+                    android:layout_width="wrap_content"
+                    android:max="5"
+                    android:numStars="5"
+                    android:stepSize="1"
+                    android:isIndicator="true"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    style="@style/foodRatingBar" />
+                <android.support.v4.widget.Space
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="0.2"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/phone_128"/>
+                    android:layout_height="20dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="6dp"
-                        android:orientation="vertical"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="0.2"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/phone_128"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:textColor="#000000"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:text="โทร"/>
-                        <TextView
-                            android:id="@+id/frag_std_inf_tel"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6"
-                            android:text="0950764133"/>
+                            android:layout_marginLeft="6dp"
+                            android:orientation="vertical"
+                            android:layout_marginTop="12dp"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="16dp"
+                                android:textStyle="bold"
+                                android:text="โทร"/>
+                            <TextView
+                                android:id="@+id/frag_std_inf_tel"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.6"
+                                android:text="0950764133"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerInside"
+                            android:layout_weight="0.2"
+                            android:src="@drawable/link_128"/>
+                        <LinearLayout
+                            android:layout_marginLeft="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginTop="12dp"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textSize="16dp"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                android:text="เว็บ"/>
+                            <TextView
+                                android:id="@+id/frag_std_inf_web"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.6"
+                                android:text="www.google.com"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:scaleType="centerInside"
-                        android:layout_weight="0.2"
-                        android:src="@drawable/link_128"/>
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
                     <LinearLayout
-                        android:layout_marginLeft="6dp"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerInside"
+                            android:layout_weight="0.2"
+                            android:src="@drawable/track_128"
+                            android:id="@+id/frag_std_inf_btn_track" />
+                        <LinearLayout
+                            android:layout_marginLeft="6dp"
+                            android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:textSize="16dp"
-                            android:textColor="#000000"
-                            android:textStyle="bold"
-                            android:text="เว็บ"/>
-                        <TextView
-                            android:id="@+id/frag_std_inf_web"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6"
-                            android:text="www.google.com"/>
+                            android:orientation="vertical"
+                            android:layout_marginTop="12dp"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textSize="16dp"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                android:text="นำทาง"/>
+                            <TextView
+                                android:id="@+id/frag_std_inf_track"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.6"
+                                android:text="www.google.com"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerInside"
+                            android:layout_weight="0.2"
+                            android:src="@drawable/dollar_1128"/>
+                        <LinearLayout
+                            android:layout_marginLeft="6dp"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginTop="12dp"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textSize="16dp"
+                                android:textColor="#000000"
+                                android:textStyle="bold"
+                                android:text="ค่าบริการ"/>
+                            <TextView
+                                android:id="@+id/frag_std_inf_rate"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.6"
+                                android:text="www.google.com"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <Space
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:scaleType="centerInside"
-                        android:layout_weight="0.2"
-                        android:src="@drawable/track_128"
-                        android:id="@+id/frag_std_inf_btn_track" />
-                    <LinearLayout
-                        android:layout_marginLeft="6dp"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:textSize="16dp"
-                            android:textColor="#000000"
-                            android:textStyle="bold"
-                            android:text="นำทาง"/>
-                        <TextView
-                            android:id="@+id/frag_std_inf_track"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6"
-                            android:text="www.google.com"/>
-                    </LinearLayout>
-                </LinearLayout>
+                android:layout_height="8dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:scaleType="centerInside"
-                        android:layout_weight="0.2"
-                        android:src="@drawable/dollar_1128"/>
-                    <LinearLayout
-                        android:layout_marginLeft="6dp"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:textSize="16dp"
-                            android:textColor="#000000"
-                            android:textStyle="bold"
-                            android:text="ค่าบริการ"/>
-                        <TextView
-                            android:id="@+id/frag_std_inf_rate"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6"
-                            android:text="www.google.com"/>
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="8dp" />
-
-        <fragment
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:id="@+id/frag_std_inf_map"
-            tools:context=".GroupActivity.StadiumInformationActivity.Fragment.InformationFragment"
-            android:name="com.google.android.gms.maps.SupportMapFragment"/>
+            <fragment
+                android:layout_width="match_parent"
+                android:layout_height="132dp"
+                android:id="@+id/frag_std_inf_map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
 
-        <!--<LinearLayout-->
+            <!--<LinearLayout-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="wrap_content"-->
             <!--android:layout_marginLeft="20dp"-->
             <!--android:layout_marginRight="20dp"-->
             <!--android:orientation="horizontal">-->
             <!--<ImageView-->
-                <!--android:layout_width="60dp"-->
-                <!--android:layout_height="60dp"-->
-                <!--android:src="@drawable/info_128"/>-->
+            <!--android:layout_width="60dp"-->
+            <!--android:layout_height="60dp"-->
+            <!--android:src="@drawable/info_128"/>-->
             <!--<TextView-->
-                <!--android:layout_marginLeft="6dp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="qwertyuiopasdfghjklzxcvbnm"/>-->
-        <!--</LinearLayout>-->
+            <!--android:layout_marginLeft="6dp"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="qwertyuiopasdfghjklzxcvbnm"/>-->
+            <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="vertical">
                 <LinearLayout
-                    android:layout_height="match_parent"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="0.2"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/open_128"/>
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="6dp"
-                        android:orientation="vertical"
-                        android:layout_marginTop="12dp"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="0.2"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/open_128"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:textColor="#000000"
-                            android:textSize="16dp"
-                            android:textStyle="bold"
-                            android:text="เวลาทำการ"/>
-                        <TextView
-                            android:id="@+id/frag_std_inf_op_time"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6"
-                            android:text="0950764133"/>
+                            android:layout_marginLeft="6dp"
+                            android:orientation="vertical"
+                            android:layout_marginTop="12dp"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:textColor="#000000"
+                                android:textSize="16dp"
+                                android:textStyle="bold"
+                                android:text="เวลาทำการ"/>
+                            <TextView
+                                android:id="@+id/frag_std_inf_op_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.6"
+                                android:text="0950764133"/>
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_height="match_parent"
-                    android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:id="@+id/frag_std_inf_book"
-                    android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="0.2"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/pencil_128"/>
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="6dp"
-                        android:orientation="vertical"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:layout_gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:id="@+id/frag_std_inf_book"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="0.2"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/pencil_128"/>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:textColor="#000000"
-                            android:textSize="18dp"
-                            android:textStyle="bold"
-                            android:text="จองเลย !"/>
+                            android:layout_marginLeft="6dp"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent">
+                            <TextView
+                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:textColor="#000000"
+                                android:textSize="18dp"
+                                android:textStyle="bold"
+                                android:text="จองเลย !"/>
+                        </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

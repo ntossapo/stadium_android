@@ -18,8 +18,10 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_appid" />
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.Splash.Splash"
             android:label="@string/title_activity_splash"
@@ -38,7 +40,13 @@
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity"></activity>
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity" />
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.SelectStadiumActivity" />
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.ConfirmActivity" />
+        <activity
+            android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity"
+            android:label="@string/title_activity_reserve"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
