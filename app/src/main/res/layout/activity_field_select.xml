@@ -20,6 +20,15 @@
             android:elevation="10dp"
             android:orientation="vertical"
             android:layout_alignParentBottom="true">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="เลือกสนาม"
+                android:gravity="center"
+                android:textSize="28dp"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
             <android.support.v7.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

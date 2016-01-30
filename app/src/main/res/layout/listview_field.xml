@@ -8,5 +8,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textSize="18dp"
+        android:layout_margin="12dp"
         android:id="@+id/listview_field_text"/>
 </LinearLayout>

@@ -27,8 +27,10 @@ import com.tossapon.stadiumfinder.Network.Server;
 
 import org.parceler.Parcels;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import butterknife.Bind;
@@ -59,14 +61,15 @@ public class PreReserveActivity extends AppCompatActivity {
     private int fieldId;
 
     private Calendar selectedDate;
-    private String stringTimeFrom;
-    private String stringTimeTo;
+    private String stringTimeFrom = null;
+    private String stringTimeTo = null;
 
     private Stadium stadium;
     private String type;
 
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-    private SimpleDateFormat dateFormatterForServer = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat dateFormatterForServer = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat parser = new SimpleDateFormat("HH:mm:ss");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +83,8 @@ public class PreReserveActivity extends AppCompatActivity {
 
         calendar = Calendar.getInstance();
         selectedDate = Calendar.getInstance();
+
+        date.setText(dateFormatter.format(selectedDate.getTime()));
 
         datePickerDialog = new DatePickerDialog(PreReserveActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -110,6 +115,22 @@ public class PreReserveActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(stringTimeFrom == null|| stringTimeTo == null){
+                    Toast.makeText(PreReserveActivity.this, "คุณยังไม่ได้เลือกเวลา", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                try {
+                    Date from = parser.parse(stringTimeFrom);
+                    Date to = parser.parse(stringTimeTo);
+                    if(from.after(to) || from.getTime() == to.getTime()){
+                        Toast.makeText(PreReserveActivity.this, "คุณยังไม่ได้เลือกเวลา", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 Retrofit retrofit = new Retrofit.Builder()
                         .addConverterFactory(GsonConverterFactory.create())
                         .baseUrl(Server.BASEURL)
