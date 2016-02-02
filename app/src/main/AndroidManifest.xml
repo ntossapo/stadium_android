@@ -28,10 +28,10 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -43,6 +43,7 @@
         <activity android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity" />
         <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.SelectStadiumActivity" />
         <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.ConfirmActivity" />
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity" />
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity"
             android:label="@string/title_activity_reserve"

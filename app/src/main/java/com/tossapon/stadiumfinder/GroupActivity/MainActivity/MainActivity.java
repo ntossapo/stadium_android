@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -35,6 +36,8 @@ import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.App.LatLngModule;
+import com.tossapon.stadiumfinder.GroupActivity.MainActivity.Fragment.PlayNowFragment;
+import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
@@ -48,6 +51,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Call;
+import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
@@ -206,6 +210,11 @@ public class MainActivity extends AppCompatActivity
                 currentMode = id;
                 changePageFragmentAndData();
                 break;
+
+            case R.id.nav_my_reserve:
+                Intent i = new Intent(this, MyReserveActivity.class);
+                startActivity(i);
+            break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -231,45 +240,39 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_reserve:
                 collapsingToolbarLayout.setTitle("จองสนาม");
                 final Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
-                AllStadiumResponse allStadiumResponse = null;
-
-                try {
-                    allStadiumResponse = new AsyncTask<Void, Void , AllStadiumResponse>(){
-                        @Override
-                        protected AllStadiumResponse doInBackground(Void... params) {
-                            try {
-                                return call.execute().body();
-                            } catch (IOException e) {
-                                return null;
-                            }
+                call.enqueue(new Callback<AllStadiumResponse>() {
+                    @Override
+                    public void onResponse(retrofit.Response<AllStadiumResponse> response, Retrofit retrofit) {
+                        AllStadiumResponse allStadiumResponse = response.body();
+                        if (allStadiumResponse == null) {
+                            Snackbar.make(drawer, "Error :" + "Something Error", Snackbar.LENGTH_LONG).show();
+                            return;
                         }
-                    }.execute().get();
-                } catch (InterruptedException e) {
-                    Snackbar.make(drawer, "Error :" + e.getMessage(), Snackbar.LENGTH_LONG).show();
-                } catch (ExecutionException e) {
-                    Snackbar.make(drawer, "Error :" + e.getMessage(), Snackbar.LENGTH_LONG).show();
-                }
 
-                if(allStadiumResponse == null){
-                    Snackbar.make(drawer, "Error :" + "Something Error", Snackbar.LENGTH_LONG).show();
-                    return;
-                }
+                        mRecyclerView.setNestedScrollingEnabled(false);
+                        mRecyclerView.setHasFixedSize(false);
 
-                mRecyclerView.setNestedScrollingEnabled(false);
-                mRecyclerView.setHasFixedSize(false);
+                        mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
+                        mRecyclerView.setLayoutManager(mLayoutManager);
+                        mAdapter = new ReserveAdapter(allStadiumResponse.data, currentSportAsString);
+                        mRecyclerView.setAdapter(mAdapter);
+                        if (debug)
+                            Log.d(TAG, "changePageFragmentAndData: data is " + mAdapter.getItemCount() + " item");
+                    }
 
-                mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
-                mRecyclerView.setLayoutManager(mLayoutManager);
-                mAdapter = new ReserveAdapter(allStadiumResponse.data, currentSportAsString);
-                mRecyclerView.setAdapter(mAdapter);
-                if(debug)
-                Log.d(TAG, "changePageFragmentAndData: data is " + mAdapter.getItemCount()+ " item");
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Snackbar.make(drawer, "Error :" + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                });
+
                 break;
             case R.id.nav_play:
 //                f = PlayWithFriendFragment.newInstance(currentSport);
                 break;
             case R.id.nav_quick:
-//                f = PlayNowFragment.newInstance(currentSport);
+                collapsingToolbarLayout.setTitle("เล่นตอนนี้");
+
                 break;
         }
 

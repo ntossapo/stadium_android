@@ -17,12 +17,6 @@
                 android:scaleType="centerCrop"
                 android:id="@+id/cardview_reserve_image"
                 android:layout_height="200dp" />
-            <TextView
-                android:padding="12dp"
-                android:textSize="14dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/cardview_reserve_text"/>
         </LinearLayout>
         <TextView
             android:layout_width="120dp"

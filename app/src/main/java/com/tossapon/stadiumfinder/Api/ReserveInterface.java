@@ -1,5 +1,6 @@
 package com.tossapon.stadiumfinder.Api;
 
+import com.tossapon.stadiumfinder.Model.Response.MyReserveResponse;
 import com.tossapon.stadiumfinder.Model.Response.PreReserveResponse;
 import com.tossapon.stadiumfinder.Model.Response.ReserveResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
@@ -42,4 +43,8 @@ public interface ReserveInterface {
             @Field("date") String date,
             @Field("field") int field
     );
+
+    @FormUrlEncoded
+    @POST("/myreserve")
+    Call<MyReserveResponse> getMyReserve(@Field("facebookId") String facebookId);
 }

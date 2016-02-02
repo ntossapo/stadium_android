@@ -48,7 +48,6 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, final int position) {
         Stadium stadium = dataSet.get(position);
         Picasso.with(context).load(stadium.image).into(holder.image);
-        holder.textview.setText(stadium.describe.length() > 200 ? stadium.describe.substring(0, 199) + "  อ่านต่อ..." : stadium.describe);
         holder.textViewName.setText(stadium.name.length() > 16 ? stadium.name.substring(0, 14) + ".." : stadium.name);
 
         holder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -71,9 +70,6 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
 
         @Bind(R.id.cardview_reserve_image)
         ImageView image;
-
-        @Bind(R.id.cardview_reserve_text)
-        TextView textview;
 
         @Bind(R.id.cardview_reserve_name)
         TextView textViewName;

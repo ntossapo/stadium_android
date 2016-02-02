@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
  * Created by Tossapon on 22/12/2558.
  */
 public class PlayNowFragment extends Fragment{
+
     @Bind(R.id.fragment_list_label)
     TextView tv;
 

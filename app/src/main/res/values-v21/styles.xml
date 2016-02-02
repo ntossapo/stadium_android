@@ -1,4 +1,8 @@
 <resources>>
 
     <style name="foodRatingBar" parent="@android:style/Widget.Material.Light.RatingBar.Small"></style>
+    <style name="minimalTextForCollapsingLayout" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 </resources>
