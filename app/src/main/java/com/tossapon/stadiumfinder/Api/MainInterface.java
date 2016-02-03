@@ -1,9 +1,14 @@
 package com.tossapon.stadiumfinder.Api;
 
+import com.tossapon.stadiumfinder.Model.Advance.QuickMatch;
+import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 
 import retrofit.Call;
+import retrofit.http.Field;
+import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
@@ -12,4 +17,8 @@ import retrofit.http.Path;
 public interface MainInterface {
     @GET("/stadium/all/{id}/{type}")
     Call<AllStadiumResponse> getStadium(@Path("id") String id, @Path("type") String type);
+
+    @FormUrlEncoded
+    @POST("/quickmatch")
+    Call<AllQuickMatchResponse> getQuickmatch(@Field("lat") double lat, @Field("long") double lng, @Field("type") String type, @Field("facebookId") String facebookId);
 }

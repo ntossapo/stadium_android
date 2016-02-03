@@ -45,7 +45,7 @@ import retrofit.Retrofit;
 
 public class Splash extends AppCompatActivity{
     private static final String TAG = "debug_Splash";
-    private static final boolean debug = false;
+    private static final boolean debug = true;
 
     @Bind(R.id.splash_login_button)
     LoginButton login;
@@ -143,10 +143,10 @@ public class Splash extends AppCompatActivity{
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(retrofit.Response<AuthResponse> response, Retrofit retrofit) {
-                
-                if (response.body().status.equals("ok")) {
+
+                if (response.body().getStatus().equals("ok")) {
                     Snackbar.make(coordinatorLayout, "การยืนยันตัวตนเรียบร้อย กำลังนำท่านเข้าสู่ Stadium Finder", Snackbar.LENGTH_LONG).show();
-                    AppUser.setInstance(response.body().data);
+                    AppUser.setInstance(response.body().getData());
                     (Executors.newSingleThreadScheduledExecutor()).schedule(new Runnable() {
                         @Override
                         public void run() {
@@ -159,12 +159,14 @@ public class Splash extends AppCompatActivity{
                 }
 
                 if (debug)
-                    Log.d(TAG, "onResponse: " + response.body().status);
+                    Log.d(TAG, "onResponse: " + response.body().getStatus());
             }
 
             @Override
             public void onFailure(Throwable t) {
-
+                Snackbar.make(coordinatorLayout, t.getMessage(), Snackbar.LENGTH_LONG).show();
+                if(debug)
+                    Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
     }

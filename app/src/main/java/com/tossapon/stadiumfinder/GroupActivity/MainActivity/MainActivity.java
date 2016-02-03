@@ -11,7 +11,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
@@ -32,19 +31,18 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.Adapter.QuickmatchAdapter;
 import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.App.LatLngModule;
-import com.tossapon.stadiumfinder.GroupActivity.MainActivity.Fragment.PlayNowFragment;
 import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity;
+import com.tossapon.stadiumfinder.Model.Advance.QuickMatch;
+import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
 import com.tossapon.stadiumfinder.Util.ExpansiveLayoutManager;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -118,7 +116,7 @@ public class MainActivity extends AppCompatActivity
 
         name.setText(AppUser.getInstance().name);
 
-//        locationSetting();
+        locationSetting();
     }
 
     private void locationSetting() {
@@ -239,7 +237,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_reserve:
                 collapsingToolbarLayout.setTitle("จองสนาม");
-                final Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
+                Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
                 call.enqueue(new Callback<AllStadiumResponse>() {
                     @Override
                     public void onResponse(retrofit.Response<AllStadiumResponse> response, Retrofit retrofit) {
@@ -272,7 +270,27 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_quick:
                 collapsingToolbarLayout.setTitle("เล่นตอนนี้");
+                Call<AllQuickMatchResponse> callQuickMatch = service.getQuickmatch(
+                        LatLngModule.getInstance().latitude,
+                        LatLngModule.getInstance().longitude,
+                        currentSportAsString,
+                        AppUser.getInstance().facebook_id);
+                callQuickMatch.enqueue(new Callback<AllQuickMatchResponse>() {
+                    @Override
+                    public void onResponse(retrofit.Response<AllQuickMatchResponse> response, Retrofit retrofit) {
+                        mRecyclerView.setNestedScrollingEnabled(false);
+                        mRecyclerView.setHasFixedSize(false);
+                        mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
+                        mRecyclerView.setLayoutManager(mLayoutManager);
+                        mAdapter = new QuickmatchAdapter(response.body().getData());
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
 
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Snackbar.make(drawer, "Error :" + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                    }
+                });
                 break;
         }
 
