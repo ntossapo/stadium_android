@@ -45,7 +45,7 @@ import retrofit.Retrofit;
 
 public class Splash extends AppCompatActivity{
     private static final String TAG = "debug_Splash";
-    private static final boolean debug = true;
+    private static final boolean debug = false;
 
     @Bind(R.id.splash_login_button)
     LoginButton login;
@@ -66,12 +66,14 @@ public class Splash extends AppCompatActivity{
         setContentView(R.layout.activity_splash2);
         ButterKnife.bind(this);
 
+        login.animate().setDuration(5000).alpha(0.0f);
+
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 try {
-                    login.animate().setDuration(5000).alpha(0.0f).start();
+                    login.animate().start();
                     requestProfile();
                     sendAuthToServer(
                             loginResult.getAccessToken().getUserId(),
@@ -143,7 +145,8 @@ public class Splash extends AppCompatActivity{
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(retrofit.Response<AuthResponse> response, Retrofit retrofit) {
-
+                if(debug)
+                    Log.d(TAG, "onResponse: " + response.message());
                 if (response.body().getStatus().equals("ok")) {
                     Snackbar.make(coordinatorLayout, "การยืนยันตัวตนเรียบร้อย กำลังนำท่านเข้าสู่ Stadium Finder", Snackbar.LENGTH_LONG).show();
                     AppUser.setInstance(response.body().getData());
@@ -175,12 +178,15 @@ public class Splash extends AppCompatActivity{
     protected void onStart() {
         super.onStart();
         OnStartAnimation();
+        logo.animate().start();
+        login.animate().start();
+
     }
 
     private void OnStartAnimation() {
-        logo.animate().setStartDelay(1000).alpha(100f).setDuration(5000).start();
-        logo.animate().setStartDelay(1000).translationY(-400f).setDuration(1000).start();
-        login.animate().setStartDelay(2000).alpha(100f).setDuration(5000).start();
+        logo.animate().setStartDelay(1000).alpha(100f).setDuration(5000);
+        logo.animate().setStartDelay(1000).translationY(-400f).setDuration(1000);
+        login.animate().setStartDelay(2000).alpha(100f).setDuration(5000);
         profile.animate().alphaBy(100f).setStartDelay(2000).setDuration(2000);
     }
 

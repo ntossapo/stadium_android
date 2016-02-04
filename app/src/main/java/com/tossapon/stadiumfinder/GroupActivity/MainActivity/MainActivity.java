@@ -29,6 +29,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.QuickmatchAdapter;
@@ -43,6 +47,11 @@ import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
 import com.tossapon.stadiumfinder.Util.ExpansiveLayoutManager;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -230,13 +239,15 @@ public class MainActivity extends AppCompatActivity
                 .build();
         MainInterface service = client.create(MainInterface.class);
 
-
+        final ProgressDialog dialog;
         switch (currentMode){
             case R.id.nav_now:
 //                f = WhatNewFragment.newInstance(currentSport, );
                 break;
             case R.id.nav_reserve:
                 collapsingToolbarLayout.setTitle("จองสนาม");
+
+                dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
                 Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
                 call.enqueue(new Callback<AllStadiumResponse>() {
                     @Override
@@ -256,20 +267,42 @@ public class MainActivity extends AppCompatActivity
                         mRecyclerView.setAdapter(mAdapter);
                         if (debug)
                             Log.d(TAG, "changePageFragmentAndData: data is " + mAdapter.getItemCount() + " item");
+                        dialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         Snackbar.make(drawer, "Error :" + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                        dialog.dismiss();
                     }
                 });
-
                 break;
             case R.id.nav_play:
 //                f = PlayWithFriendFragment.newInstance(currentSport);
+                collapsingToolbarLayout.setTitle("เล่นกับเพื่อน");
+                dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
+                GraphRequest request = GraphRequest.newMyFriendsRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONArrayCallback() {
+                    @Override
+                    public void onCompleted(JSONArray objects, GraphResponse response) {
+                        JSONArray onlyFriendId = new JSONArray();
+                        Log.d(TAG, "onCompleted: " + objects.toString());
+                        for(int i = 0 ; i < objects.length() ; i++){
+                            try {
+                                onlyFriendId.put(objects.getJSONObject(i).getString("id"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+
+                    }
+                });
+
+                request.executeAsync();
                 break;
             case R.id.nav_quick:
                 collapsingToolbarLayout.setTitle("เล่นตอนนี้");
+                dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
                 Call<AllQuickMatchResponse> callQuickMatch = service.getQuickmatch(
                         LatLngModule.getInstance().latitude,
                         LatLngModule.getInstance().longitude,
@@ -284,13 +317,16 @@ public class MainActivity extends AppCompatActivity
                         mRecyclerView.setLayoutManager(mLayoutManager);
                         mAdapter = new QuickmatchAdapter(response.body().getData());
                         mRecyclerView.setAdapter(mAdapter);
+                        dialog.dismiss();
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
                         Snackbar.make(drawer, "Error :" + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                        dialog.dismiss();
                     }
                 });
+
                 break;
         }
 

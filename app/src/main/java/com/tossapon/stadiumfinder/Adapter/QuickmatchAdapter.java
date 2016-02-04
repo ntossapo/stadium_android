@@ -99,7 +99,6 @@ public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
                                             if(response.body().getStatus().equals("ok")) {
                                                 Toast.makeText(context, "คุณได้เข้าร่วมการเล่นแล้ว", Toast.LENGTH_SHORT).show();
                                                 dataSet.remove(position);
-//                                                QuickmatchAdapter.this.notifyDataSetChanged();
                                                 QuickmatchAdapter.this.notifyItemRemoved(position);
                                             }else
                                                 Toast.makeText(context, response.body().getErr(), Toast.LENGTH_SHORT).show();
