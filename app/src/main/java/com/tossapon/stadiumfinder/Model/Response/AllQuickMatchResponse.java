@@ -10,10 +10,6 @@ import java.util.List;
 public class AllQuickMatchResponse extends Response{
     List<QuickMatch> data;
 
-    public String getStatus() {
-        return status;
-    }
-
     public List<QuickMatch> getData() {
         return data;
     }

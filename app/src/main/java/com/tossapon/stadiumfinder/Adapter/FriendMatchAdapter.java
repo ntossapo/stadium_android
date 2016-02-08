@@ -15,12 +15,11 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
-import com.tossapon.stadiumfinder.Adapter.QuickmatchAdapter.ViewHolder;
 import com.tossapon.stadiumfinder.Api.QuickInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
+import com.tossapon.stadiumfinder.Model.Advance.FriendMatch;
 import com.tossapon.stadiumfinder.Model.Advance.QuickMatch;
 import com.tossapon.stadiumfinder.Model.Basic.User;
-import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
 
@@ -38,18 +37,17 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 /**
- * Created by Tossapon Nuanchuay on 3/2/2559.
+ * Created by Tossapon Nuanchuay on 7/2/2559.
  */
-public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
+public class FriendMatchAdapter extends RecyclerView.Adapter<FriendMatchAdapter.ViewHolder>{
 
-    private List<QuickMatch> dataSet;
+    private List<FriendMatch> dataSet;
     private Context context;
 
     private SimpleDateFormat timeHHmm = new SimpleDateFormat("HH:mm");
-    private SimpleDateFormat timeHHmmss = new SimpleDateFormat("HH:mm:ss");
     private SimpleDateFormat dateYYYYMMDD = new SimpleDateFormat("yyyy-MM-dd");
 
-    public QuickmatchAdapter(List<QuickMatch> dataSet) {
+    public FriendMatchAdapter(List<FriendMatch> dataSet) {
         this.dataSet = dataSet;
     }
 
@@ -65,10 +63,9 @@ public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, final int position) {
         try {
             Date date = dateYYYYMMDD.parse(dataSet.get(position).getDate());
-            Date time = timeHHmmss.parse(dataSet.get(position).getTime_from());
             long diff = (date.getTime() - Calendar.getInstance().getTime().getTime())/ (24 * 60 * 60 * 1000);
 
-            String timeString = (diff == 0 ? "วันนี้" : "อีก " + diff + " วัน") + "\nเวลา " + (timeHHmm.format(time));
+            String timeString = (diff == 0 ? "วันนี้" : "อีก " + diff + " วัน") + "\nเวลา " + dataSet.get(position).getTime_from();
             timeString += "\n" + dataSet.get(position).getUsername() + " ได้จองไว้";
 
             Picasso.with(context).load(dataSet.get(position).getImage()).into(holder.image);
@@ -76,15 +73,14 @@ public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
 
             List<User> users = dataSet.get(position).getUser();
             String userString = "";
-            if(users.size() > 0){
-                for(int i = 0 ; i < (users.size() >= 3 ? 3 : users.size()); i++)
-                    userString += users.get(i).name + (users.size()-1 == i ? " " : ",");
+            if(users.size() > 0) {
+                for (int i = 0; i < (users.size() >= 3 ? 3 : users.size()); i++)
+                    userString += users.get(i).name + ", ";
                 userString += " เข้าร่วม";
+                holder.friend.setText(userString);
             }else{
                 userString = "ยังไม่มีใครเข้าร่วม";
             }
-            holder.friend.setText(userString);
-
             holder.cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,7 +100,7 @@ public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
                                             if(response.body().getStatus().equals("ok")) {
                                                 Toast.makeText(context, "คุณได้เข้าร่วมการเล่นแล้ว", Toast.LENGTH_SHORT).show();
                                                 dataSet.remove(position);
-                                                QuickmatchAdapter.this.notifyItemRemoved(position);
+                                                FriendMatchAdapter.this.notifyItemRemoved(position);
                                             }else
                                                 Toast.makeText(context, response.body().getErr(), Toast.LENGTH_SHORT).show();
                                         }

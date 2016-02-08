@@ -62,7 +62,7 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
             long diff = (reserveDate.getTime().getTime() - calendar.getTime().getTime())/ (24 * 60 * 60 * 1000);
 
 
-            holder.time.setText(timeHHmm.format(timeFrom) + "\n" + "อีก " + diff + " วัน");
+            holder.time.setText(timeHHmm.format(timeFrom) + "\n"  + (diff==0?"วันนี้" : "อีก " + diff  + " วัน"));
             holder.header.setText("คุณได้จองสนามที่ " + dataSet.get(position).getStadium_name() +
                             " \nสนาม " + dataSet.get(position).getField_name() +
                             "\nวันที่ " + dataSet.get(position).getDate()

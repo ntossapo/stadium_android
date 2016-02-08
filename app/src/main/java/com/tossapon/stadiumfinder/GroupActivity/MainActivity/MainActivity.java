@@ -1,7 +1,6 @@
 package com.tossapon.stadiumfinder.GroupActivity.MainActivity;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,7 +19,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -33,15 +34,18 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.Adapter.FriendMatchAdapter;
 import com.tossapon.stadiumfinder.Adapter.QuickmatchAdapter;
 import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.App.LatLngModule;
 import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity;
-import com.tossapon.stadiumfinder.Model.Advance.QuickMatch;
+import com.tossapon.stadiumfinder.GroupActivity.Splash.Splash;
+import com.tossapon.stadiumfinder.Model.Response.AllFriendMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
@@ -50,8 +54,6 @@ import com.tossapon.stadiumfinder.Util.ExpansiveLayoutManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity
 
     int currentSport = 0;
     String currentSportAsString = "soccer";
-    int currentMode = R.id.nav_now;
+    int currentMode = R.id.nav_playfriend;
 
     @Bind(R.id.activity_main_toolbar)
     Toolbar toolbar;
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity
     private LocationManager locationManager;
     private String provider;
     private Location location;
-    private boolean debug = false;
+    private boolean debug = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,18 +212,36 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         switch (id){
-            case R.id.nav_now:
+            case R.id.nav_playfriend:
             case R.id.nav_reserve:
-            case R.id.nav_play:
             case R.id.nav_quick:
                 currentMode = id;
                 changePageFragmentAndData();
                 break;
 
-            case R.id.nav_my_reserve:
+            case R.id.nav_my:
                 Intent i = new Intent(this, MyReserveActivity.class);
                 startActivity(i);
-            break;
+                break;
+            case R.id.nav_logout:
+                AlertDialog al =new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("ออกจากระบบ")
+                        .setMessage("คุณต้องการออกจากระบบหรือไม่ ?")
+                        .setPositiveButton("ใช่", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                LoginManager.getInstance().logOut();
+                                Intent i = new Intent(MainActivity.this, Splash.class);
+                                startActivity(i);
+                                finish();
+                            }
+                        }).setNegativeButton("ให้ฉันอยู่ต่อ", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -237,73 +257,76 @@ public class MainActivity extends AppCompatActivity
                 .baseUrl(Server.BASEURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        MainInterface service = client.create(MainInterface.class);
+        final MainInterface service = client.create(MainInterface.class);
 
         final ProgressDialog dialog;
         switch (currentMode){
-            case R.id.nav_now:
-//                f = WhatNewFragment.newInstance(currentSport, );
-                break;
+            //จองสนาม
             case R.id.nav_reserve:
                 collapsingToolbarLayout.setTitle("จองสนาม");
-
                 dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
                 Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
                 call.enqueue(new Callback<AllStadiumResponse>() {
                     @Override
                     public void onResponse(retrofit.Response<AllStadiumResponse> response, Retrofit retrofit) {
-                        AllStadiumResponse allStadiumResponse = response.body();
-                        if (allStadiumResponse == null) {
-                            Snackbar.make(drawer, "Error :" + "Something Error", Snackbar.LENGTH_LONG).show();
-                            return;
-                        }
-
                         mRecyclerView.setNestedScrollingEnabled(false);
                         mRecyclerView.setHasFixedSize(false);
-
                         mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
                         mRecyclerView.setLayoutManager(mLayoutManager);
-                        mAdapter = new ReserveAdapter(allStadiumResponse.data, currentSportAsString);
+                        mAdapter = new ReserveAdapter(response.body().data, currentSportAsString);
                         mRecyclerView.setAdapter(mAdapter);
                         if (debug)
-                            Log.d(TAG, "changePageFragmentAndData: data is " + mAdapter.getItemCount() + " item");
+                            Log.d(TAG, "onResponse: จองสนาม " + mAdapter.getItemCount() + " item");
                         dialog.dismiss();
                     }
-
                     @Override
                     public void onFailure(Throwable t) {
-                        Snackbar.make(drawer, "Error :" + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(drawer, "Error : จองสนาม" + t.getMessage(), Snackbar.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
                 });
                 break;
-            case R.id.nav_play:
-//                f = PlayWithFriendFragment.newInstance(currentSport);
+
+            //เล่นกับเพื่อน
+            case R.id.nav_playfriend:
                 collapsingToolbarLayout.setTitle("เล่นกับเพื่อน");
                 dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
                 GraphRequest request = GraphRequest.newMyFriendsRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONArrayCallback() {
                     @Override
                     public void onCompleted(JSONArray objects, GraphResponse response) {
-                        JSONArray onlyFriendId = new JSONArray();
-                        Log.d(TAG, "onCompleted: " + objects.toString());
-                        for(int i = 0 ; i < objects.length() ; i++){
-                            try {
-                                onlyFriendId.put(objects.getJSONObject(i).getString("id"));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        if(debug)
+                            Log.d(TAG, "onResponse: เล่นกับเพื่อน" + objects.toString());
+                        Call<AllFriendMatchResponse> friendCall = service.getFriendMatch(objects.toString(), AppUser.getInstance().facebook_id, currentSportAsString);
+                        friendCall.enqueue(new Callback<AllFriendMatchResponse>() {
+                            @Override
+                            public void onResponse(retrofit.Response<AllFriendMatchResponse> res, Retrofit retrofit) {
+                                mRecyclerView.setHasFixedSize(false);
+                                mRecyclerView.setNestedScrollingEnabled(false);
+                                mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                                mRecyclerView.setLayoutManager(mLayoutManager);
+                                mAdapter = new FriendMatchAdapter(res.body().getData());
+                                mRecyclerView.setAdapter(mAdapter);
+                                if(debug)
+                                    Log.d(TAG, "onResponse: เล่นกับเพื่อน" + res.body().getStatus());
+                                dialog.dismiss();
                             }
-                        }
-
-
+                            @Override
+                            public void onFailure(Throwable t) {
+                                Snackbar.make(drawer, "Error : เล่นกับเพื่อน " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                                Log.d(TAG, "onFailure: " + t.getMessage());
+                                dialog.dismiss();
+                            }
+                        });
                     }
                 });
-
                 request.executeAsync();
                 break;
+
+            //เล่นตอนนี้
             case R.id.nav_quick:
                 collapsingToolbarLayout.setTitle("เล่นตอนนี้");
                 dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
-                Call<AllQuickMatchResponse> callQuickMatch = service.getQuickmatch(
+                Call<AllQuickMatchResponse> callQuickMatch = service.getQuickMatch(
                         LatLngModule.getInstance().latitude,
                         LatLngModule.getInstance().longitude,
                         currentSportAsString,
@@ -317,16 +340,16 @@ public class MainActivity extends AppCompatActivity
                         mRecyclerView.setLayoutManager(mLayoutManager);
                         mAdapter = new QuickmatchAdapter(response.body().getData());
                         mRecyclerView.setAdapter(mAdapter);
+                        if(debug)
+                            Log.d(TAG, "onResponse: เล่นตอนนี้ " + response.message());
                         dialog.dismiss();
                     }
-
                     @Override
                     public void onFailure(Throwable t) {
-                        Snackbar.make(drawer, "Error :" + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(drawer, "Error : เล่นตอนนี้ " + t.getMessage(), Snackbar.LENGTH_LONG).show();
                         dialog.dismiss();
                     }
                 });
-
                 break;
         }
 

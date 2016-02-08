@@ -4,15 +4,11 @@
     <group
         android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_now"
-            android:icon="@drawable/now32"
-            android:title="อะไรใหม่ๆ"/>
-        <item
             android:id="@+id/nav_quick"
             android:icon="@drawable/quick32"
             android:title="เล่นตอนนี้" />
         <item
-            android:id="@+id/nav_play"
+            android:id="@+id/nav_playfriend"
             android:icon="@drawable/play32"
             android:title="เล่นกับเพื่อน" />
         <item
@@ -24,11 +20,7 @@
     <item android:title="ของฉัน">
         <menu>
             <item
-                android:id="@+id/nav_my_reserve"
-                android:icon="@drawable/myreserve32"
-                android:title="จอง" />
-            <item
-                android:id="@+id/nav_favorite"
+                android:id="@+id/nav_my"
                 android:icon="@drawable/media23"
                 android:title="เล่น" />
             <item

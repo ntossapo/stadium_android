@@ -1,6 +1,7 @@
 package com.tossapon.stadiumfinder.Api;
 
 import com.tossapon.stadiumfinder.Model.Advance.QuickMatch;
+import com.tossapon.stadiumfinder.Model.Response.AllFriendMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 
@@ -20,5 +21,9 @@ public interface MainInterface {
 
     @FormUrlEncoded
     @POST("/quickmatch")
-    Call<AllQuickMatchResponse> getQuickmatch(@Field("lat") double lat, @Field("long") double lng, @Field("type") String type, @Field("facebookId") String facebookId);
+    Call<AllQuickMatchResponse> getQuickMatch(@Field("lat") double lat, @Field("long") double lng, @Field("type") String type, @Field("facebookId") String facebookId);
+
+    @FormUrlEncoded
+    @POST("/friendplay")
+    Call<AllFriendMatchResponse> getFriendMatch(@Field("friends") String fiends, @Field("facebook_id") String facebookId, @Field("type") String type);
 }
