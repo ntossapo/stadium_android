@@ -77,10 +77,10 @@ public class FriendMatchAdapter extends RecyclerView.Adapter<FriendMatchAdapter.
                 for (int i = 0; i < (users.size() >= 3 ? 3 : users.size()); i++)
                     userString += users.get(i).name + ", ";
                 userString += " เข้าร่วม";
-                holder.friend.setText(userString);
             }else{
                 userString = "ยังไม่มีใครเข้าร่วม";
             }
+            holder.friend.setText(userString);
             holder.cardview.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

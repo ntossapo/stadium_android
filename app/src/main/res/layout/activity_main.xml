@@ -14,84 +14,49 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="312dp"
+            android:layout_height="112dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/activity_main_collapse_toolbar"
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/activity_main_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:expandedTitleMarginStart="64dp"
-                app:contentScrim="?attr/colorPrimary">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layout_collapseMode="parallax">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:id="@+id/activity_main_sport_bg"
-                        android:background="@drawable/soccer"/>
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="#66000000"/>
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <Button
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="32dp"
-                            android:background="#00000000"
-                            android:textColor="#FFFFFF"
-                            android:gravity="center"
-                            android:text="ฟุตบอล"
-                            android:id="@+id/activity_main_sport_type"
-                            android:onClick="onClickSportType"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true" />
-                    </RelativeLayout>
-                </FrameLayout>
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/activity_main_toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:titleTextColor="#FFFFFF"
-                    android:background="#00FFFFFF"
-                    app:layout_collapseMode="pin"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:layout_marginRight="16dp"
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:src="@drawable/magnifier32"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentEnd="true" />
-                    </RelativeLayout>
-                </android.support.v7.widget.Toolbar>
-            </android.support.design.widget.CollapsingToolbarLayout>
+                android:layout_height="?attr/actionBarSize"
+                android:titleTextColor="#FFFFFF"
+                android:background="#00FFFFFF"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            </android.support.v7.widget.Toolbar>
+            <android.support.design.widget.TabLayout
+                android:id="@+id/activity_main_tab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tabGravity="center"
+                app:tabMode="scrollable"/>
         </android.support.design.widget.AppBarLayout>
-
-
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/activity_main_recycler_view"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#00000000"
+                        android:gravity="center"
+                        android:textColor="#757575"
+                        android:id="@+id/activity_main_text"/>
+                </FrameLayout>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/activity_main_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.design.widget.CoordinatorLayout>
 

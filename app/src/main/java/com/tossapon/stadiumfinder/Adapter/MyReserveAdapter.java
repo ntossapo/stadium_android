@@ -1,13 +1,17 @@
 package com.tossapon.stadiumfinder.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.FacebookSdk;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Model.Advance.MyReserve;
@@ -36,6 +40,11 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
     private SimpleDateFormat dateYYYYMMDD = new SimpleDateFormat("yyyy-MM-dd");
     private Calendar calendar = Calendar.getInstance();
 
+    private static final int invite = 0;
+    private static final int cancel = 1;
+
+    String[] itemServices = {"ชวนเพื่อน", "ยกเลิกการจอง"};
+
     public MyReserveAdapter(List<MyReserve> dataSet) {
         this.dataSet = dataSet;
     }
@@ -53,8 +62,12 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
         Date timeFrom;
         Date date;
         Calendar reserveDate = Calendar.getInstance();
-        Picasso.with(context).load(dataSet.get(position).getImage()).into(holder.image);
         try {
+            if(dataSet.get(position).getIsConfirm() == 1){
+                Picasso.with(context).load(R.drawable.check52).into(holder.image);
+            }else{
+                Picasso.with(context).load(R.drawable.cancel10).into(holder.image);
+            }
             timeFrom = timeHHmmss.parse(dataSet.get(position).getTime_from());
             date = dateYYYYMMDD.parse(dataSet.get(position).getDate());
             reserveDate.setTime(date);
@@ -67,6 +80,26 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
                             " \nสนาม " + dataSet.get(position).getField_name() +
                             "\nวันที่ " + dataSet.get(position).getDate()
             );
+
+            holder.self.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder b = new AlertDialog.Builder(context);
+                    b.setItems(itemServices, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case invite :
+
+                                    break;
+                                case cancel :
+                                    break;
+                            }
+                        }
+                    });
+                    b.show();
+                }
+            });
         } catch (ParseException e) {
             Log.d(TAG, "onBindViewHolder: " + e.getMessage());
         }
@@ -85,6 +118,8 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
         TextView time;
         @Bind(R.id.cardview_myreserve_image)
         CircleImageView image;
+        @Bind(R.id.cardview_myreserve_self)
+        RelativeLayout self;
 
         public ViewHolder(View itemView) {
             super(itemView);

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -68,9 +69,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
     private static final String TAG = "MainActivity";
-    final String[] types = {"ฟุตบอล", "ฟุตซอล", "เทนนิส", "บาสเก็ตบอล", "เทเบิล เทนนิส", "แบดมินตัน"};
-
-    int currentSport = 0;
+    final String[] typesTh = {"ฟุตบอล", "ฟุตซอล", "เทนนิส", "บาสเก็ตบอล", "เทเบิล เทนนิส", "แบดมินตัน"};
+    final String[] typesEng = {"soccer", "futsal", "tennis", "basketball", "pingpong", "badminton"};
     String currentSportAsString = "soccer";
     int currentMode = R.id.nav_playfriend;
 
@@ -83,20 +83,21 @@ public class MainActivity extends AppCompatActivity
     @Bind(R.id.activity_main_nav_view)
     NavigationView navigationView;
 
-    @Bind(R.id.activity_main_sport_type)
-    TextView sportType;
-
     CircleImageView circleImageView;
     TextView name;
 
-    @Bind(R.id.activity_main_sport_bg)
-    ImageView sportBg;
+    @Bind(R.id.activity_main_tab)
+    TabLayout tabLayout;
 
-    @Bind(R.id.activity_main_collapse_toolbar)
-    CollapsingToolbarLayout collapsingToolbarLayout;
+//    @Bind(R.id.activity_main_collapse_toolbar)
+//    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @Bind(R.id.activity_main_recycler_view)
     RecyclerView mRecyclerView;
+
+    @Bind(R.id.activity_main_text)
+    TextView textStatus;
+
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
     private LocationManager locationManager;
@@ -108,12 +109,32 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
-        circleImageView = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.activity_main_circle_image_view);
-        name = (TextView) navigationView.getHeaderView(0).findViewById(R.id.activity_main_text_view_name);
 
         setSupportActionBar(toolbar);
+        for(int i = 0; i < typesTh.length; i++)
+            tabLayout.addTab(tabLayout.newTab().setText(typesTh[i]));
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                currentSportAsString = typesEng[tab.getPosition()];
+                changePageFragmentAndData();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+        circleImageView = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.activity_main_circle_image_view);
+        name = (TextView) navigationView.getHeaderView(0).findViewById(R.id.activity_main_text_view_name);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -121,13 +142,12 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-//        navigationView.addHeaderView();
-
         Picasso.with(getApplicationContext()).load(AppUser.getInstance().picurl).into(circleImageView);
-
         name.setText(AppUser.getInstance().name);
+        changePageFragmentAndData();
 
-        locationSetting();
+//        locationSetting() ;
+        LatLngModule.newInstance(7.9030052, 98.3471783);
     }
 
     private void locationSetting() {
@@ -146,53 +166,6 @@ public class MainActivity extends AppCompatActivity
         }
         location = locationManager.getLastKnownLocation(provider);
         LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
-    }
-
-    public void onSportChangeListerner(int which, View v){
-        int id = 0;
-        switch (which){
-            case 0 :
-                id = R.drawable.soccer;
-                currentSportAsString = "soccer";
-                break;
-            case 1 :
-                id = R.drawable.futsol;
-                currentSportAsString = "futsal";
-                break;
-            case 2 :
-                id = R.drawable.tennis;
-                currentSportAsString = "tennis";
-                break;
-            case 3 :
-                id = R.drawable.basketball;
-                currentSportAsString = "basketball";
-                break;
-            case 4 :
-                id = R.drawable.tt;
-                currentSportAsString = "pingpong";
-                break;
-            case 5 :
-                id = R.drawable.badminton;
-                currentSportAsString = "badminton";
-                break;
-        }
-        sportBg.setImageResource(id);
-        currentSport = which;
-        changePageFragmentAndData();
-    }
-
-    @OnClick(R.id.activity_main_sport_type)
-    public void onClickSportType(View v){
-        AlertDialog.Builder b = new AlertDialog.Builder(this);
-        b.setTitle("เลือกกีฬา");
-        b.setItems(types, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                sportType.setText(types[which]);
-                onSportChangeListerner(which, sportType);
-            }
-        });
-        b.show();
     }
 
     @Override
@@ -218,7 +191,6 @@ public class MainActivity extends AppCompatActivity
                 currentMode = id;
                 changePageFragmentAndData();
                 break;
-
             case R.id.nav_my:
                 Intent i = new Intent(this, MyReserveActivity.class);
                 startActivity(i);
@@ -249,9 +221,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void changePageFragmentAndData(){
-        Fragment f = null;
-        Response res = null;
-
         ProgressDialog progressDialog = ProgressDialog.show(MainActivity.this, "Loading", "กำลังรวบรวมข้อมูล");
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(Server.BASEURL)
@@ -263,7 +232,8 @@ public class MainActivity extends AppCompatActivity
         switch (currentMode){
             //จองสนาม
             case R.id.nav_reserve:
-                collapsingToolbarLayout.setTitle("จองสนาม");
+//                collapsingToolbarLayout.setTitle("จองสนาม");
+                getSupportActionBar().setTitle("จองสนาม");
                 dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
                 Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
                 call.enqueue(new Callback<AllStadiumResponse>() {
@@ -273,6 +243,10 @@ public class MainActivity extends AppCompatActivity
                         mRecyclerView.setHasFixedSize(false);
                         mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
                         mRecyclerView.setLayoutManager(mLayoutManager);
+                        if(response.body().data.size() == 0)
+                            textStatus.setText("ไม่มีข้อมูล");
+                        else
+                            textStatus.setText("");
                         mAdapter = new ReserveAdapter(response.body().data, currentSportAsString);
                         mRecyclerView.setAdapter(mAdapter);
                         if (debug)
@@ -289,7 +263,7 @@ public class MainActivity extends AppCompatActivity
 
             //เล่นกับเพื่อน
             case R.id.nav_playfriend:
-                collapsingToolbarLayout.setTitle("เล่นกับเพื่อน");
+                getSupportActionBar().setTitle("เล่นกับเพื่อน");
                 dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
                 GraphRequest request = GraphRequest.newMyFriendsRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONArrayCallback() {
                     @Override
@@ -303,6 +277,10 @@ public class MainActivity extends AppCompatActivity
                                 mRecyclerView.setHasFixedSize(false);
                                 mRecyclerView.setNestedScrollingEnabled(false);
                                 mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                                if(res.body().getData().size() == 0)
+                                    textStatus.setText("ยังไม่มีใครจองสนามเลย \nคุณลองจองสนามและชวนเพื่อนๆของคุณ");
+                                else
+                                    textStatus.setText("");
                                 mRecyclerView.setLayoutManager(mLayoutManager);
                                 mAdapter = new FriendMatchAdapter(res.body().getData());
                                 mRecyclerView.setAdapter(mAdapter);
@@ -324,7 +302,7 @@ public class MainActivity extends AppCompatActivity
 
             //เล่นตอนนี้
             case R.id.nav_quick:
-                collapsingToolbarLayout.setTitle("เล่นตอนนี้");
+                getSupportActionBar().setTitle("เล่นตอนนี้");
                 dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
                 Call<AllQuickMatchResponse> callQuickMatch = service.getQuickMatch(
                         LatLngModule.getInstance().latitude,
@@ -336,6 +314,10 @@ public class MainActivity extends AppCompatActivity
                     public void onResponse(retrofit.Response<AllQuickMatchResponse> response, Retrofit retrofit) {
                         mRecyclerView.setNestedScrollingEnabled(false);
                         mRecyclerView.setHasFixedSize(false);
+                        if(response.body().getData().size() == 0)
+                            textStatus.setText("ยังไม่มีใครจองสนามเลย \nคุณลองจองสนามและรอเพื่อนๆ จอยกับคุณ");
+                        else
+                            textStatus.setText("");
                         mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
                         mRecyclerView.setLayoutManager(mLayoutManager);
                         mAdapter = new QuickmatchAdapter(response.body().getData());

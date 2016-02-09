@@ -1,6 +1,11 @@
 package com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +15,7 @@ import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.MyReserveAdapter;
 import com.tossapon.stadiumfinder.Api.ReserveInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
+import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.Fragment.MyReserveFragment;
 import com.tossapon.stadiumfinder.Model.Response.MyReserveResponse;
 import com.tossapon.stadiumfinder.Network.Server;
 
@@ -26,14 +32,20 @@ import retrofit.Retrofit;
  */
 public class MyReserveActivity extends AppCompatActivity {
 
-    @Bind(R.id.activity_myreserve_recycler)
-    RecyclerView mRecycler;
+//    @Bind(R.id.activity_myreserve_recycler)
+//    RecyclerView mRecycler;
 
     @Bind(R.id.activity_myreserve_toolbar)
     Toolbar toolbar;
 
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter mAdapter;
+    @Bind(R.id.activity_myreserve_tab)
+    TabLayout tabLayout;
+
+    @Bind(R.id.activity_myreserve_viewpager)
+    ViewPager viewPager;
+
+    private SectionPagerAdapter mPageAdapter;
+//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +53,36 @@ public class MyReserveActivity extends AppCompatActivity {
         setContentView(R.layout.activity_myreserve);
         ButterKnife.bind(this);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(Server.BASEURL)
-                .build();
-        toolbar.setTitleTextColor(0xFFFFFFFF);
-        toolbar.setTitle("สนามที่จองไว้");
+        mPageAdapter = new SectionPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mPageAdapter);
+        tabLayout.setupWithViewPager(viewPager);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("เล่น");
+    }
 
-        mRecycler.setHasFixedSize(false);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecycler.setLayoutManager(mLayoutManager);
+    public class SectionPagerAdapter extends FragmentPagerAdapter{
 
-        ReserveInterface service = retrofit.create(ReserveInterface.class);
-        Call<MyReserveResponse> call = service.getMyReserve(AppUser.getInstance().facebook_id);
-        call.enqueue(new Callback<MyReserveResponse>() {
-            @Override
-            public void onResponse(Response<MyReserveResponse> response, Retrofit retrofit) {
-                mAdapter = new MyReserveAdapter(response.body().getData());
-                mRecycler.setAdapter(mAdapter);
+        public SectionPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return MyReserveFragment.newInstance();
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position){
+                case 0 : return "การของของฉัน";
+                default:
+                case 1 : return "ที่เข้าร่วม";
             }
-
-            @Override
-            public void onFailure(Throwable t) {
-
-            }
-        });
+        }
     }
 }
