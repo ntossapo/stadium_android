@@ -1,7 +1,9 @@
 package com.tossapon.stadiumfinder.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,10 +13,25 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.share.model.GameRequestContent;
+import com.facebook.share.widget.GameRequestDialog;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.Api.FacebookServiceInterface;
+import com.tossapon.stadiumfinder.GroupActivity.FriendInviteActivity.FriendInviteActivity;
 import com.tossapon.stadiumfinder.Model.Advance.MyReserve;
+import com.tossapon.stadiumfinder.Model.FacebookResponse.FacebookNotificationResponse;
+import com.tossapon.stadiumfinder.Network.Server;
+
+import org.json.JSONArray;
+import org.parceler.Parcels;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +42,9 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit.Call;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
 
 /**
  * Created by Tossapon Nuanchuay on 30/1/2559.
@@ -39,7 +59,6 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
     private SimpleDateFormat timeHHmm = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat dateYYYYMMDD = new SimpleDateFormat("yyyy-MM-dd");
     private Calendar calendar = Calendar.getInstance();
-
     private static final int invite = 0;
     private static final int cancel = 1;
 
@@ -58,7 +77,7 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         Date timeFrom;
         Date date;
         Calendar reserveDate = Calendar.getInstance();
@@ -90,7 +109,9 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
                                 case invite :
-
+                                    Intent i = new Intent(context, FriendInviteActivity.class);
+                                    i.putExtra("reserve", Parcels.wrap(dataSet.get(position)));
+                                    context.startActivity(i);
                                     break;
                                 case cancel :
                                     break;
@@ -109,6 +130,8 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
     public int getItemCount() {
         return dataSet.size();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 

@@ -15,6 +15,7 @@ import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.MyReserveAdapter;
 import com.tossapon.stadiumfinder.Api.ReserveInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
+import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.Fragment.MyJoinFragment;
 import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.Fragment.MyReserveFragment;
 import com.tossapon.stadiumfinder.Model.Response.MyReserveResponse;
 import com.tossapon.stadiumfinder.Network.Server;
@@ -68,7 +69,18 @@ public class MyReserveActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return MyReserveFragment.newInstance();
+            Fragment f = null;
+            switch (position){
+                case 0:
+                    f = MyReserveFragment.newInstance();
+                    break;
+                default:
+                case 1:
+                    f = MyJoinFragment.newInstance();
+                    break;
+
+            }
+            return f;
         }
 
         @Override
@@ -79,7 +91,7 @@ public class MyReserveActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position){
-                case 0 : return "การของของฉัน";
+                case 0 : return "การจองของฉัน";
                 default:
                 case 1 : return "ที่เข้าร่วม";
             }

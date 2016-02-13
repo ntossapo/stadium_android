@@ -16,8 +16,8 @@ import retrofit.http.Path;
  * Created by Tossapon on 23/12/2558.
  */
 public interface MainInterface {
-    @GET("/stadium/all/{id}/{type}")
-    Call<AllStadiumResponse> getStadium(@Path("id") String id, @Path("type") String type);
+    @GET("/stadium/all/{id}/{type}/{lat}/{long}")
+    Call<AllStadiumResponse> getStadium(@Path("id") String id, @Path("type") String type, @Path("lat") double lat, @Path("long") double lng);
 
     @FormUrlEncoded
     @POST("/quickmatch")
@@ -25,5 +25,5 @@ public interface MainInterface {
 
     @FormUrlEncoded
     @POST("/friendplay")
-    Call<AllFriendMatchResponse> getFriendMatch(@Field("friends") String fiends, @Field("facebook_id") String facebookId, @Field("type") String type);
+    Call<AllFriendMatchResponse> getFriendMatch(@Field("friends") String fiends, @Field("facebook_id") String facebookId, @Field("type") String type, @Field("lat") double lat, @Field("lng") double lng);
 }

@@ -8,6 +8,8 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -43,6 +45,8 @@
         <activity android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity" />
         <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.SelectStadiumActivity" />
         <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.ConfirmActivity" />
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendInviteActivity.FriendInviteActivity" />
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendActivity.FriendActivity" />
         <activity android:name="com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity" />
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity"

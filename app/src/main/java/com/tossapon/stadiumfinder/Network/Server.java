@@ -5,5 +5,5 @@ package com.tossapon.stadiumfinder.Network;
 public class Server {
     public static final String BASEURL = "http://192.168.56.1:8000";
     public static final String ROUTE_BASEURL = "https://maps.googleapis.com";
-
+    public static final String FacebookGraphApi = "https://graph.facebook.com/";
 }

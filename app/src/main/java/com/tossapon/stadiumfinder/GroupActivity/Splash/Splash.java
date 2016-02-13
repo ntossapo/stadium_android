@@ -3,6 +3,7 @@ package com.tossapon.stadiumfinder.GroupActivity.Splash;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -22,15 +23,28 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.Adapter.FriendAdapter;
 import com.tossapon.stadiumfinder.Api.AuthInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
+import com.tossapon.stadiumfinder.Model.Facebook.Friend;
 import com.tossapon.stadiumfinder.Model.Response.AuthResponse;
 import com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity;
 import com.tossapon.stadiumfinder.Network.Server;
+import com.tossapon.stadiumfinder.Util.FileUtil;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -45,7 +59,7 @@ import retrofit.Retrofit;
 
 public class Splash extends AppCompatActivity{
     private static final String TAG = "debug_Splash";
-    private static final boolean debug = false;
+    private static final boolean debug = true;
 
     @Bind(R.id.splash_login_button)
     LoginButton login;
@@ -75,12 +89,15 @@ public class Splash extends AppCompatActivity{
                 try {
                     login.animate().start();
                     requestProfile();
+//                    getFriendList();
                     sendAuthToServer(
                             loginResult.getAccessToken().getUserId(),
                             loginResult.getAccessToken().getToken(),
                             name,
                             picurl
                     );
+
+
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -112,6 +129,7 @@ public class Splash extends AppCompatActivity{
                 requestProfile();
                 Picasso.with(getApplicationContext()).load(picurl).into(profile);
                 profile.animate().start();
+//                getFriendList();
                 sendAuthToServer(
                         AccessToken.getCurrentAccessToken().getUserId(),
                         AccessToken.getCurrentAccessToken().getToken(),
@@ -129,6 +147,23 @@ public class Splash extends AppCompatActivity{
 
         OnInitialAnimation();
     }
+
+//    private void getFriendList() {
+//        GraphRequest request = GraphRequest.newMyFriendsRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONArrayCallback() {
+//            @Override
+//            public void onCompleted(JSONArray objects, GraphResponse response) {
+//                try {
+//                    FileUtil.writeFile(getApplicationContext(), "friends", objects.toString());
+//                    Log.d(TAG, "onCompleted: " + FileUtil.readFile(getApplicationContext(), "friends"));
+//                } catch (FileNotFoundException e) {
+//                    Log.d(TAG, "onCompleted: " + e.getMessage());
+//                } catch (IOException e) {
+//                    Log.d(TAG, "onCompleted: " + e.getMessage());
+//                }
+//            }
+//        });
+//        request.executeAsync();
+//    }
 
     private void sendAuthToServer(String userId, String token, String name, String picurl) {
         Retrofit client = new Retrofit.Builder()
@@ -158,7 +193,6 @@ public class Splash extends AppCompatActivity{
                             finish();
                         }
                     }, 4, TimeUnit.SECONDS);
-//                    startNextActivity();
                 }
 
                 if (debug)

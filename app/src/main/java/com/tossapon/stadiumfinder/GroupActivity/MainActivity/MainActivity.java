@@ -44,6 +44,7 @@ import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.App.LatLngModule;
+import com.tossapon.stadiumfinder.GroupActivity.FriendActivity.FriendActivity;
 import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity;
 import com.tossapon.stadiumfinder.GroupActivity.Splash.Splash;
 import com.tossapon.stadiumfinder.Model.Response.AllFriendMatchResponse;
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent i = null;
         switch (id){
             case R.id.nav_playfriend:
             case R.id.nav_reserve:
@@ -192,11 +194,15 @@ public class MainActivity extends AppCompatActivity
                 changePageFragmentAndData();
                 break;
             case R.id.nav_my:
-                Intent i = new Intent(this, MyReserveActivity.class);
+                i = new Intent(this, MyReserveActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_friend:
+                i = new Intent(this, FriendActivity.class);
                 startActivity(i);
                 break;
             case R.id.nav_logout:
-                AlertDialog al =new AlertDialog.Builder(MainActivity.this)
+                new AlertDialog.Builder(MainActivity.this)
                         .setTitle("ออกจากระบบ")
                         .setMessage("คุณต้องการออกจากระบบหรือไม่ ?")
                         .setPositiveButton("ใช่", new DialogInterface.OnClickListener() {
@@ -208,11 +214,11 @@ public class MainActivity extends AppCompatActivity
                                 finish();
                             }
                         }).setNegativeButton("ให้ฉันอยู่ต่อ", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        }).show();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
                 break;
         }
 
@@ -235,7 +241,10 @@ public class MainActivity extends AppCompatActivity
 //                collapsingToolbarLayout.setTitle("จองสนาม");
                 getSupportActionBar().setTitle("จองสนาม");
                 dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
-                Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id, currentSportAsString);
+                Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id,
+                        currentSportAsString,
+                        LatLngModule.getInstance().latitude,
+                        LatLngModule.getInstance().longitude);
                 call.enqueue(new Callback<AllStadiumResponse>() {
                     @Override
                     public void onResponse(retrofit.Response<AllStadiumResponse> response, Retrofit retrofit) {
@@ -260,7 +269,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
                 break;
-
             //เล่นกับเพื่อน
             case R.id.nav_playfriend:
                 getSupportActionBar().setTitle("เล่นกับเพื่อน");
@@ -270,7 +278,12 @@ public class MainActivity extends AppCompatActivity
                     public void onCompleted(JSONArray objects, GraphResponse response) {
                         if(debug)
                             Log.d(TAG, "onResponse: เล่นกับเพื่อน" + objects.toString());
-                        Call<AllFriendMatchResponse> friendCall = service.getFriendMatch(objects.toString(), AppUser.getInstance().facebook_id, currentSportAsString);
+                        Call<AllFriendMatchResponse> friendCall = service.getFriendMatch(
+                                objects.toString(),
+                                AppUser.getInstance().facebook_id,
+                                currentSportAsString,
+                                LatLngModule.getInstance().latitude,
+                                LatLngModule.getInstance().longitude);
                         friendCall.enqueue(new Callback<AllFriendMatchResponse>() {
                             @Override
                             public void onResponse(retrofit.Response<AllFriendMatchResponse> res, Retrofit retrofit) {

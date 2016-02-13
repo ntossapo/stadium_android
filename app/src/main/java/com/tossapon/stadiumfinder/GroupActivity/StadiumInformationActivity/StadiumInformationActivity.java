@@ -79,14 +79,13 @@ public class StadiumInformationActivity extends AppCompatActivity {
             switch (position){
                 case 0 : return InformationFragment.newInstance(data, type);
                 case 1 : return TimeTableFragment.newInstance(data, type);
-                case 2 : return PictureFragment.newInstance(data, type);
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
 
         @Override
@@ -94,7 +93,6 @@ public class StadiumInformationActivity extends AppCompatActivity {
             switch (position){
                 case 0 : return "ข้อมูล";
                 case 1 : return "ตารางเวลา";
-                case 2 : return "รูป";
             }
             return null;
         }

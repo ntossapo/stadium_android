@@ -38,8 +38,10 @@
         android:id="@+id/activity_stadium_inf_tabs"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:background="@color/colorPrimary"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:background="#009688"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/activity_stadium_inf_nested_scroll"
