@@ -80,7 +80,7 @@ public class Splash extends AppCompatActivity{
         setContentView(R.layout.activity_splash2);
         ButterKnife.bind(this);
 
-        login.animate().setDuration(5000).alpha(0.0f);
+        login.animate().alpha(0.0f);
 
         callbackManager = CallbackManager.Factory.create();
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {

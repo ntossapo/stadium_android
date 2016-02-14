@@ -71,7 +71,7 @@ public class MyJoinAdapter extends RecyclerView.Adapter<MyJoinAdapter.ViewHolder
             timeForm = timeHHmmss.parse(dataSet.get(position).getTime_from());
             date = dateYYYYMMDD.parse(dataSet.get(position).getDate());
             joinDate.setTime(date);
-            long diff = (calendar.getTime().getTime() - joinDate.getTime().getTime())/ (24 * 60 * 60 * 1000);
+            long diff = (joinDate.getTime().getTime() - calendar.getTime().getTime())/ (24 * 60 * 60 * 1000);
 
             holder.time.setText(timeHHmm.format(timeForm) + "\n"  + (diff==0?"วันนี้" : "อีก " + diff  + " วัน"));
             holder.header.setText(dataSet.get(position).getOwnername() + " ได้จองสนามที่ " + dataSet.get(position).getStadium_name() +

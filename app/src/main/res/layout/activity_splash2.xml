@@ -5,12 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/splash_coordinate"
     android:layout_height="match_parent"
+    android:background="#009688"
     android:layout_width="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
-        android:background="#01579B"
+        android:background="@drawable/pattern"
         tools:context=".GroupActivity.Splash.Splash">
         <TextView
             android:layout_width="wrap_content"
@@ -32,6 +33,8 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_marginBottom="87dp"
+            android:background="#0000897B"
+            style="@style/FacebookLoginButton"
             android:layout_alignParentBottom="true"
             android:id="@+id/splash_login_button"
             android:layout_centerHorizontal="true">

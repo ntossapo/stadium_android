@@ -54,7 +54,7 @@ public class FriendActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setTitle("เพื่อน");
         if (debug)
             for (int i = 0 ; i < fileList().length ; i++)
                 Log.d(TAG, "onCreate: " + fileList()[i]);
