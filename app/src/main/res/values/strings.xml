@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Stadium Finder</string>
-    <string name="title_activity_splash">Splash</string>
+    <string name="title_activity_splash">Stadium Finder</string>
     <string name="facebook_appid">1525632074413630</string>
     <string name="title_activity_main">MainActivity</string>
 
