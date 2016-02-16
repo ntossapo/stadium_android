@@ -147,26 +147,30 @@ public class MainActivity extends AppCompatActivity
         name.setText(AppUser.getInstance().name);
         changePageFragmentAndData();
 
-//        locationSetting() ;
+        locationSetting() ;
         LatLngModule.newInstance(7.9030052, 98.3471783);
     }
 
     private void locationSetting() {
+
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         Criteria c = new Criteria();
-        provider = locationManager.getBestProvider(c, false);
+        provider = String.valueOf(locationManager.getBestProvider(c, false));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
+//               public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
         location = locationManager.getLastKnownLocation(provider);
-        LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
+        if(location != null)
+            LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
+        else{
+            locationManager.requestLocationUpdates(provider, 1000, 0, this);
+        }
     }
 
     @Override
@@ -327,6 +331,7 @@ public class MainActivity extends AppCompatActivity
                     public void onResponse(retrofit.Response<AllQuickMatchResponse> response, Retrofit retrofit) {
                         mRecyclerView.setNestedScrollingEnabled(false);
                         mRecyclerView.setHasFixedSize(false);
+                        Log.d(TAG, "onResponse: เล่นตอนนี้ " + response.message() + "\ncode:" + response.code() ) ;
                         if(response.body().getData().size() == 0)
                             textStatus.setText("ยังไม่มีใครจองสนามเลย \nคุณลองจองสนามและรอเพื่อนๆ จอยกับคุณ");
                         else

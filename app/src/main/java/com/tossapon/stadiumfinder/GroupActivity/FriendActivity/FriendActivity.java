@@ -32,7 +32,7 @@ import butterknife.ButterKnife;
 public class FriendActivity extends AppCompatActivity {
 
     private static final String TAG = "FriendActivity";
-    private static final boolean debug = true;
+    private static final boolean debug = false;
     @Bind(R.id.activity_friend_toolbar)
     Toolbar toolbar;
 
@@ -114,8 +114,8 @@ public class FriendActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    protected void onDestroy() {
+        super.onDestroy();
         JSONArray array = new JSONArray();
         for(int i = 0 ; i < arrayListBlockedFriend.size() ; i++){
             array.put(arrayListBlockedFriend.get(i));
