@@ -10,6 +10,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
@@ -44,6 +45,7 @@ import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.App.LatLngModule;
+import com.tossapon.stadiumfinder.App.SocketIO;
 import com.tossapon.stadiumfinder.GroupActivity.FriendActivity.FriendActivity;
 import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity;
 import com.tossapon.stadiumfinder.GroupActivity.Splash.Splash;
@@ -53,9 +55,13 @@ import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
 import com.tossapon.stadiumfinder.Util.ExpansiveLayoutManager;
+import com.tossapon.stadiumfinder.Util.FileUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -148,7 +154,7 @@ public class MainActivity extends AppCompatActivity
         changePageFragmentAndData();
 
         locationSetting() ;
-        LatLngModule.newInstance(7.9030052, 98.3471783);
+//        LatLngModule.newInstance(7.9030052, 98.3471783);
     }
 
     private void locationSetting() {
@@ -166,11 +172,21 @@ public class MainActivity extends AppCompatActivity
             return;
         }
         location = locationManager.getLastKnownLocation(provider);
-        if(location != null)
+        if(location != null) {
             LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
-        else{
-            locationManager.requestLocationUpdates(provider, 1000, 0, this);
+            JSONObject json = new JSONObject();
+            try {
+                json.put("user", AppUser.getInstance().facebook_id);
+                json.put("lat", location.getLatitude());
+                json.put("lng", location.getLongitude());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            SocketIO.getInstance().emit("location", json.toString());
         }
+        locationManager.requestLocationUpdates(provider, 1000, 10, this);
+
+
     }
 
     @Override
@@ -282,6 +298,25 @@ public class MainActivity extends AppCompatActivity
                     public void onCompleted(JSONArray objects, GraphResponse response) {
                         if(debug)
                             Log.d(TAG, "onResponse: เล่นกับเพื่อน" + objects.toString());
+
+                        try {
+                            String friendsBloked = FileUtil.readFile(getApplicationContext(), "blockFriend");
+                            for(int i = 0 ; i < objects.length() ; i++){
+                                if(friendsBloked.contains(objects.getJSONObject(i).getString("id"))){
+                                    Log.d(TAG, "onCompleted: remove friend" + objects.getJSONObject(i).getString("id"));
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                        objects.remove(i);
+                                    }
+                                }
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        Log.d(TAG, "onCompleted: " + objects.toString());
+
                         Call<AllFriendMatchResponse> friendCall = service.getFriendMatch(
                                 objects.toString(),
                                 AppUser.getInstance().facebook_id,
@@ -331,7 +366,7 @@ public class MainActivity extends AppCompatActivity
                     public void onResponse(retrofit.Response<AllQuickMatchResponse> response, Retrofit retrofit) {
                         mRecyclerView.setNestedScrollingEnabled(false);
                         mRecyclerView.setHasFixedSize(false);
-                        Log.d(TAG, "onResponse: เล่นตอนนี้ " + response.message() + "\ncode:" + response.code() ) ;
+                        Log.d(TAG, "onResponse: เล่นตอนนี้ " + response.message() + "\ncode:" + response.code()) ;
                         if(response.body().getData().size() == 0)
                             textStatus.setText("ยังไม่มีใครจองสนามเลย \nคุณลองจองสนามและรอเพื่อนๆ จอยกับคุณ");
                         else
@@ -359,6 +394,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onLocationChanged(Location location) {
         LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("user", AppUser.getInstance().facebook_id);
+            json.put("lat", location.getLatitude());
+            json.put("lng", location.getLongitude());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        SocketIO.getInstance().emit("location", json.toString());
     }
 
     @Override
