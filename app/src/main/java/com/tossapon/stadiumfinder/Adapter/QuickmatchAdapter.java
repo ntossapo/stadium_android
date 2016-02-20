@@ -78,7 +78,7 @@ public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
             String userString = "";
             if(users.size() > 0){
                 for(int i = 0 ; i < (users.size() >= 3 ? 3 : users.size()); i++)
-                    userString += users.get(i).name + (users.size()-1 == i ? " " : ",");
+                    userString += users.get(i).getName() + (users.size()-1 == i ? " " : ",");
                 userString += " เข้าร่วม";
             }else{
                 userString = "ยังไม่มีใครเข้าร่วม";
@@ -97,7 +97,7 @@ public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
                                             .addConverterFactory(GsonConverterFactory.create())
                                             .build();
                                     QuickInterface service = retrofit.create(QuickInterface.class);
-                                    Call<Response> call = service.join(AppUser.getInstance().facebook_id, dataSet.get(position).getId());
+                                    Call<Response> call = service.join(AppUser.getInstance().getFacebook_id(), dataSet.get(position).getId());
                                     call.enqueue(new Callback<Response>() {
                                         @Override
                                         public void onResponse(retrofit.Response<Response> response, Retrofit retrofit) {

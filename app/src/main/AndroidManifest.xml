@@ -30,10 +30,10 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -51,7 +51,11 @@
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity"
             android:label="@string/title_activity_reserve"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.tossapon.stadiumfinder.GroupActivity.SettingsActivity.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
+        <service android:name="com.tossapon.stadiumfinder.Services.LocationService" android:exported="false"></service>
     </application>
 
 </manifest>

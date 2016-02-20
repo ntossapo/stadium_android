@@ -75,7 +75,7 @@ public class ConfirmActivity extends AppCompatActivity{
                         .build();
                 ReserveInterface service = retrofit.create(ReserveInterface.class);
                 Call<ReserveResponse> call = service.Reserve(
-                        AppUser.getInstance().facebook_id,
+                        AppUser.getInstance().getFacebook_id(),
                         reservation.getTimeTo(),
                         reservation.getTimeFrom(),
                         reservation.getDate(),

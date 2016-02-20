@@ -31,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabGravity="center"
+                android:layout_gravity="center"
                 app:tabMode="scrollable"/>
         </android.support.design.widget.AppBarLayout>
         <android.support.v4.widget.NestedScrollView

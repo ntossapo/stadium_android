@@ -105,7 +105,7 @@ public class FriendInviteActivity extends AppCompatActivity {
                                 friendsId.get(i),
                                 AccessToken.getCurrentAccessToken().getToken(),
                                 "http://www.google.com",
-                                AppUser.getInstance().name + "ได้ชวนคุณเข้าร่วมเล่น");
+                                AppUser.getInstance().getName() + "ได้ชวนคุณเข้าร่วมเล่น");
                         call.enqueue(new Callback<FacebookNotificationResponse>() {
                             @Override
                             public void onResponse(Response<FacebookNotificationResponse> response, Retrofit retrofit) {

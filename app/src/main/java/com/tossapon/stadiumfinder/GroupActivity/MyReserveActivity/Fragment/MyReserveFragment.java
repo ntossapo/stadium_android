@@ -56,7 +56,7 @@ public class MyReserveFragment extends Fragment {
         mRecycler.setLayoutManager(mLayoutManager);
 
         ReserveInterface service = retrofit.create(ReserveInterface.class);
-        Call<MyReserveResponse> call = service.getMyReserve(AppUser.getInstance().facebook_id);
+        Call<MyReserveResponse> call = service.getMyReserve(AppUser.getInstance().getFacebook_id());
         call.enqueue(new Callback<MyReserveResponse>() {
             @Override
             public void onResponse(Response<MyReserveResponse> response, Retrofit retrofit) {

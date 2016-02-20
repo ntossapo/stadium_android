@@ -14,4 +14,5 @@ public class AppUser {
     public static User getInstance(){
         return account;
     }
+    public static User emergencyUser;
 }

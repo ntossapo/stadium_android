@@ -27,10 +27,10 @@
                 android:id="@+id/nav_friend"
                 android:icon="@drawable/friend32"
                 android:title="เพื่อน" />
-            <!--<item-->
-                <!--android:id="@+id/nav_setting"-->
-                <!--android:icon="@drawable/setting32"-->
-                <!--android:title="ตั้งค่า" />-->
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/setting32"
+                android:title="ตั้งค่า" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/logout32"

@@ -9,10 +9,10 @@ import org.parceler.ParcelConstructor;
 
 @Parcel
 public class User {
-    public String facebook_id;
-    public String facebook_token;
-    public String name;
-    public String picurl;
+    String facebook_id;
+    String facebook_token;
+    String name;
+    String picurl;
 
     @ParcelConstructor
     public User(String facebook_id, String facebook_token, String name, String picurl) {
@@ -20,5 +20,21 @@ public class User {
         this.facebook_token = facebook_token;
         this.name = name;
         this.picurl = picurl;
+    }
+
+    public String getFacebook_id() {
+        return facebook_id;
+    }
+
+    public String getFacebook_token() {
+        return facebook_token;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPicurl() {
+        return picurl;
     }
 }

@@ -1,23 +1,13 @@
 package com.tossapon.stadiumfinder.GroupActivity.MainActivity;
 
-import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,12 +18,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
@@ -45,28 +32,25 @@ import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
 import com.tossapon.stadiumfinder.Api.MainInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.App.LatLngModule;
-import com.tossapon.stadiumfinder.App.SocketIO;
 import com.tossapon.stadiumfinder.GroupActivity.FriendActivity.FriendActivity;
 import com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity;
+import com.tossapon.stadiumfinder.GroupActivity.SettingsActivity.SettingsActivity;
 import com.tossapon.stadiumfinder.GroupActivity.Splash.Splash;
 import com.tossapon.stadiumfinder.Model.Response.AllFriendMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
-import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
 import com.tossapon.stadiumfinder.Util.ExpansiveLayoutManager;
 import com.tossapon.stadiumfinder.Util.FileUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Call;
 import retrofit.Callback;
@@ -74,7 +58,7 @@ import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MainActivity";
     final String[] typesTh = {"ฟุตบอล", "ฟุตซอล", "เทนนิส", "บาสเก็ตบอล", "เทเบิล เทนนิส", "แบดมินตัน"};
@@ -108,9 +92,6 @@ public class MainActivity extends AppCompatActivity
 
     RecyclerView.LayoutManager mLayoutManager;
     RecyclerView.Adapter mAdapter;
-    private LocationManager locationManager;
-    private String provider;
-    private Location location;
     private boolean debug = true;
 
     @Override
@@ -118,7 +99,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        locationSetting();
 
         setSupportActionBar(toolbar);
         for (int i = 0; i < typesTh.length; i++)
@@ -151,57 +131,13 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-        Picasso.with(getApplicationContext()).load(AppUser.getInstance().picurl).into(circleImageView);
-        name.setText(AppUser.getInstance().name);
+        Picasso.with(getApplicationContext()).load(AppUser.getInstance().getPicurl()).into(circleImageView);
+        name.setText(AppUser.getInstance().getName());
         changePageFragmentAndData();
 
 //        LatLngModule.newInstance(7.9030052, 98.3471783);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationManager.removeUpdates(this);
-    }
-
-    private void locationSetting() {
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        Criteria c = new Criteria();
-        provider = locationManager.getBestProvider(c, false);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationManager.requestLocationUpdates(provider, 400, 1, this);
-        location = locationManager.getLastKnownLocation(provider);
-        if(location != null) {
-            Log.d(TAG, "location is not null");
-            LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
-            JSONObject json = new JSONObject();
-            try {
-                json.put("user", AppUser.getInstance().facebook_id);
-                json.put("lat", location.getLatitude());
-                json.put("lng", location.getLongitude());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            SocketIO.getInstance().emit("location", json.toString());
-        }
-
-        Log.d(TAG, "locationSetting: set request location updates");
-
-    }
 
     @Override
     public void onBackPressed() {
@@ -254,6 +190,10 @@ public class MainActivity extends AppCompatActivity
                     }
                 }).show();
                 break;
+            case R.id.nav_setting:
+                i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -275,7 +215,7 @@ public class MainActivity extends AppCompatActivity
 //                collapsingToolbarLayout.setTitle("จองสนาม");
                 getSupportActionBar().setTitle("จองสนาม");
                 dialog = ProgressDialog.show(MainActivity.this, "", "กำลังโหลดข้อมูล", true);
-                Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().facebook_id,
+                Call<AllStadiumResponse> call = service.getStadium(AppUser.getInstance().getFacebook_id(),
                         currentSportAsString,
                         LatLngModule.getInstance().latitude,
                         LatLngModule.getInstance().longitude);
@@ -336,7 +276,7 @@ public class MainActivity extends AppCompatActivity
 
                         Call<AllFriendMatchResponse> friendCall = service.getFriendMatch(
                                 objects.toString(),
-                                AppUser.getInstance().facebook_id,
+                                AppUser.getInstance().getFacebook_id(),
                                 currentSportAsString,
                                 LatLngModule.getInstance().latitude,
                                 LatLngModule.getInstance().longitude);
@@ -377,7 +317,7 @@ public class MainActivity extends AppCompatActivity
                         LatLngModule.getInstance().latitude,
                         LatLngModule.getInstance().longitude,
                         currentSportAsString,
-                        AppUser.getInstance().facebook_id);
+                        AppUser.getInstance().getFacebook_id());
                 callQuickMatch.enqueue(new Callback<AllQuickMatchResponse>() {
                     @Override
                     public void onResponse(retrofit.Response<AllQuickMatchResponse> response, Retrofit retrofit) {
@@ -406,35 +346,5 @@ public class MainActivity extends AppCompatActivity
         }
 
         progressDialog.dismiss();
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.d(TAG, location.getLatitude() + " " + location.getLongitude());
-        LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
-        JSONObject json = new JSONObject();
-        try {
-            json.put("user", AppUser.getInstance().facebook_id);
-            json.put("lat", location.getLatitude());
-            json.put("lng", location.getLongitude());
-        } catch (JSONException e) {
-            Log.d(TAG, "onLocationChanged: ");
-        }
-        SocketIO.getInstance().emit("location", json.toString());
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 }

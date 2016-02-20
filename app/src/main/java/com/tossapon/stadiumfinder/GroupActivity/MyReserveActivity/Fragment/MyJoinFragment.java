@@ -57,7 +57,7 @@ public class MyJoinFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecycler.setLayoutManager(mLayoutManager);
         JoinInterface service = retrofit.create(JoinInterface.class);
-        Call<MyJoinResponse> call = service.getMyJoin(AppUser.getInstance().facebook_id);
+        Call<MyJoinResponse> call = service.getMyJoin(AppUser.getInstance().getFacebook_id());
         call.enqueue(new Callback<MyJoinResponse>() {
             @Override
             public void onResponse(Response<MyJoinResponse> response, Retrofit retrofit) {
