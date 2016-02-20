@@ -61,6 +61,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 
 import butterknife.Bind;
@@ -117,9 +118,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        locationSetting();
 
         setSupportActionBar(toolbar);
-        for(int i = 0; i < typesTh.length; i++)
+        for (int i = 0; i < typesTh.length; i++)
             tabLayout.addTab(tabLayout.newTab().setText(typesTh[i]));
 
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -153,26 +155,38 @@ public class MainActivity extends AppCompatActivity
         name.setText(AppUser.getInstance().name);
         changePageFragmentAndData();
 
-        locationSetting() ;
 //        LatLngModule.newInstance(7.9030052, 98.3471783);
     }
 
-    private void locationSetting() {
-
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        Criteria c = new Criteria();
-        provider = String.valueOf(locationManager.getBestProvider(c, false));
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-//               public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.removeUpdates(this);
+    }
+
+    private void locationSetting() {
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Criteria c = new Criteria();
+        provider = locationManager.getBestProvider(c, false);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.requestLocationUpdates(provider, 400, 1, this);
         location = locationManager.getLastKnownLocation(provider);
         if(location != null) {
+            Log.d(TAG, "location is not null");
             LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
             JSONObject json = new JSONObject();
             try {
@@ -184,8 +198,8 @@ public class MainActivity extends AppCompatActivity
             }
             SocketIO.getInstance().emit("location", json.toString());
         }
-        locationManager.requestLocationUpdates(provider, 1000, 10, this);
 
+        Log.d(TAG, "locationSetting: set request location updates");
 
     }
 
@@ -300,9 +314,12 @@ public class MainActivity extends AppCompatActivity
                             Log.d(TAG, "onResponse: เล่นกับเพื่อน" + objects.toString());
 
                         try {
-                            String friendsBloked = FileUtil.readFile(getApplicationContext(), "blockFriend");
+                            File f = new File(getFilesDir().getPath() + "/blockFriend");
+                            if(!f.exists())
+                                FileUtil.writeFile(getApplicationContext(), "blockFriend", "[]");
+                            String friendsBlocked = FileUtil.readFile(getApplicationContext(), "blockFriend");
                             for(int i = 0 ; i < objects.length() ; i++){
-                                if(friendsBloked.contains(objects.getJSONObject(i).getString("id"))){
+                                if(friendsBlocked.contains(objects.getJSONObject(i).getString("id"))){
                                     Log.d(TAG, "onCompleted: remove friend" + objects.getJSONObject(i).getString("id"));
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                         objects.remove(i);
@@ -393,6 +410,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLocationChanged(Location location) {
+        Log.d(TAG, location.getLatitude() + " " + location.getLongitude());
         LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
         JSONObject json = new JSONObject();
         try {
@@ -400,7 +418,7 @@ public class MainActivity extends AppCompatActivity
             json.put("lat", location.getLatitude());
             json.put("lng", location.getLongitude());
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.d(TAG, "onLocationChanged: ");
         }
         SocketIO.getInstance().emit("location", json.toString());
     }

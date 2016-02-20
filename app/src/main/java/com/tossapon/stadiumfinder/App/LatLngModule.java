@@ -8,6 +8,8 @@ import com.google.android.gms.maps.model.LatLng;
 public class LatLngModule{
     private static LatLng ourInstance;
     public static LatLng getInstance() {
+        if(ourInstance == null)
+            ourInstance = new LatLng(0.0, 0.0);
         return ourInstance;
     }
 
