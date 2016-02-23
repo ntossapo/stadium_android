@@ -16,7 +16,6 @@ import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Api.JoinInterface;
 import com.tossapon.stadiumfinder.Model.Advance.MyJoin;
-import com.tossapon.stadiumfinder.Model.Advance.MyReserve;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
 
@@ -89,9 +88,9 @@ public class MyJoinAdapter extends RecyclerView.Adapter<MyJoinAdapter.ViewHolder
                                             .baseUrl(Server.BASEURL)
                                             .addConverterFactory(GsonConverterFactory.create())
                                             .build();
-                                    Log.d(TAG, "onClick: " + dataSet.get(position).getJoinId());
+                                    Log.d(TAG, "onClick: " + dataSet.get(position).getJoinid());
                                     JoinInterface service = retrofit.create(JoinInterface.class);
-                                    Call<Response> call = service.deleteJoin(dataSet.get(position).getJoinId());
+                                    Call<Response> call = service.deleteJoin(dataSet.get(position).getJoinid());
                                     call.enqueue(new Callback<Response>() {
                                         @Override
                                         public void onResponse(retrofit.Response<Response> response, Retrofit retrofit) {

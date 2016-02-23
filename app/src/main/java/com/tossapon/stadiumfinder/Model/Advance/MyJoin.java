@@ -10,18 +10,21 @@ import org.parceler.ParcelConstructor;
 public class MyJoin extends MyReserve {
     String ownername;
     String reserverImage;
-    int joinId;
+    int joinid;
     public MyJoin(int id, int match_id, String date, String time_from, String time_to, int isConfirm, double latitude, double longitude, String stadium_name, String field_name, String image) {
         super(id, match_id, date, time_from, time_to, isConfirm, latitude, longitude, stadium_name, field_name, image);
     }
 
     @ParcelConstructor
-    public MyJoin(int id, int match_id, String date, String time_from, String time_to, int isConfirm, double latitude, double longitude, String stadium_name, String field_name, String image, String ownername, String reserverImage, int joinId) {
+    public MyJoin(int id, int match_id, String date, String time_from, String time_to, int isConfirm, double latitude, double longitude, String stadium_name, String field_name, String image, String ownername, String reserverImage, int joinid) {
         super(id, match_id, date, time_from, time_to, isConfirm, latitude, longitude, stadium_name, field_name, image);
         this.ownername = ownername;
         this.reserverImage = reserverImage;
-        this.joinId = joinId;
+        this.joinid = joinid;
     }
+
+
+
 
     public String getOwnername() {
         return ownername;
@@ -31,7 +34,7 @@ public class MyJoin extends MyReserve {
         return reserverImage;
     }
 
-    public int getJoinId() {
-        return joinId;
+    public int getJoinid() {
+        return joinid;
     }
 }
