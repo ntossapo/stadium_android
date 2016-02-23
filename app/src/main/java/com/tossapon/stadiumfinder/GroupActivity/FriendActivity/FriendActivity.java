@@ -93,6 +93,7 @@ public class FriendActivity extends AppCompatActivity {
         GraphRequest request = GraphRequest.newMyFriendsRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONArrayCallback() {
             @Override
             public void onCompleted(JSONArray objects, GraphResponse response) {
+                Log.d(TAG, "onCompleted: " + objects.toString());
                 ArrayList<Friend> friends = new ArrayList<>();
                 for (int i = 0; i < objects.length(); i++) {
                     try {

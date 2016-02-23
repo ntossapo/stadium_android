@@ -47,4 +47,8 @@ public interface ReserveInterface {
     @FormUrlEncoded
     @POST("/myreserve")
     Call<MyReserveResponse> getMyReserve(@Field("facebookId") String facebookId);
+
+    @FormUrlEncoded
+    @POST("/myreserve/delete")
+    Call<Response> deleteMyReserve(@Field("id") int reserveid);
 }

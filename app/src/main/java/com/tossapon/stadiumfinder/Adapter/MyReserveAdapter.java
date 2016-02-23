@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -25,9 +26,12 @@ import com.facebook.share.widget.GameRequestDialog;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Api.FacebookServiceInterface;
+import com.tossapon.stadiumfinder.Api.JoinInterface;
+import com.tossapon.stadiumfinder.Api.ReserveInterface;
 import com.tossapon.stadiumfinder.GroupActivity.FriendInviteActivity.FriendInviteActivity;
 import com.tossapon.stadiumfinder.Model.Advance.MyReserve;
 import com.tossapon.stadiumfinder.Model.FacebookResponse.FacebookNotificationResponse;
+import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
 
 import org.json.JSONArray;
@@ -43,6 +47,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Call;
+import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
 
@@ -114,7 +119,32 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
                                     context.startActivity(i);
                                     break;
                                 case cancel :
+                                    Retrofit retrofit = new Retrofit.Builder()
+                                            .baseUrl(Server.BASEURL)
+                                            .addConverterFactory(GsonConverterFactory.create())
+                                            .build();
+                                    Log.d(TAG, "onClick: " + dataSet.get(position).getId());
+                                    ReserveInterface service = retrofit.create(ReserveInterface.class);
+                                    Call<Response> call = service.deleteMyReserve(dataSet.get(position).getId());
+                                    call.enqueue(new Callback<Response>() {
+                                        @Override
+                                        public void onResponse(retrofit.Response<Response> response, Retrofit retrofit) {
+                                            if(response.body().getStatus().equals("ok")) {
+                                                Toast.makeText(context, "ลบการจองสำเร็จ", Toast.LENGTH_LONG).show();
+                                                dataSet.remove(position);
+                                                MyReserveAdapter.this.notifyItemRemoved(position);
+                                                Log.d(TAG, "onResponse: " + MyReserveAdapter.this.getItemCount());
+                                                Log.d(TAG, "onResponse: " + response.body().getStatus());
+                                            }else{
+                                                Toast.makeText(context, response.body().getErr(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
 
+                                        @Override
+                                        public void onFailure(Throwable t) {
+
+                                        }
+                                    });
                                     break;
                             }
                         }

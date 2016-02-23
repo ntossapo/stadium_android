@@ -255,6 +255,6 @@ public class Splash extends AppCompatActivity{
             }
         }).execute().get();
         name = jsonRes.getString("name");
-        picurl = jsonRes.getJSONObject("picture").getJSONObject("data").getString("url");
+        picurl = "http://graph.facebook.com/" + AccessToken.getCurrentAccessToken().getUserId() + "/picture?type=large&redirect=true&width=400&height=400";
     }
 }

@@ -21,10 +21,10 @@ public class Stadium {
     public String describe;
     public double latitude;
     public double longitude;
-
+    public int count;
 
     @ParcelConstructor
-    public Stadium(int id, String name, String image, double rating, int nowPlayer, String tel, String link, String time_open, String time_close, String describe, double latitude, double longitude) {
+    public Stadium(int id, String name, String image, double rating, int nowPlayer, String tel, String link, String time_open, String time_close, String describe, double latitude, double longitude, int count) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -37,5 +37,6 @@ public class Stadium {
         this.describe = describe;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.count = count;
     }
 }

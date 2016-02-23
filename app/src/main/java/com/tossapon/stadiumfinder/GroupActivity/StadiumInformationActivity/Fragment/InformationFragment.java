@@ -1,6 +1,7 @@
 package com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.Fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -52,6 +53,7 @@ public class InformationFragment extends Fragment {
     @Bind(R.id.frag_std_inf_rate) TextView textViewRate;
     @Bind(R.id.frag_std_inf_op_time) TextView textViewOpTime;
     @Bind(R.id.frag_std_inf_book) LinearLayout linearLayout;
+    @Bind(R.id.frag_std_inf_track_self) LinearLayout trackSelf;
 
     private Stadium stadium;
     private GoogleMap mMap;
@@ -86,6 +88,25 @@ public class InformationFragment extends Fragment {
                 i.putExtra("stadium", Parcels.wrap(stadium));
                 i.putExtra("type", type);
                 startActivity(i);
+            }
+        });
+
+        trackSelf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+stadium.latitude + ","+stadium.longitude);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
+        textViewTrack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+stadium.latitude + ","+stadium.longitude);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
         return v;

@@ -46,7 +46,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.name.setText(dataSet.get(position).getName());
-        Picasso.with(context).load(dataSet.get(position).getPicture()).into(holder.picture);
+        Picasso.with(context).load("http://graph.facebook.com/" + dataSet.get(position).getId() + "/picture?type=large&redirect=true&width=400&height=400").into(holder.picture);
 
         if(arrayListBlockedFriend.indexOf(dataSet.get(position).getId()) > -1)
             holder.checkbox.setChecked(false);

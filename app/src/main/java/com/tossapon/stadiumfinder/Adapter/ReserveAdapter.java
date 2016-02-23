@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
  */
 public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHolder>{
 
+    private static final String TAG = "ReserveAdapter";
     private List<Stadium> dataSet;
     private Context context;
     private String type;
@@ -49,7 +51,7 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
         Stadium stadium = dataSet.get(position);
         Picasso.with(context).load(stadium.image).into(holder.image);
         holder.textViewName.setText(stadium.name.length() > 16 ? stadium.name.substring(0, 14) + ".." : stadium.name);
-
+        holder.count.setText(stadium.count+"");
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +78,9 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
 
         @Bind(R.id.cardview_reserve_card)
         CardView cardview;
+
+        @Bind(R.id.cardview_reserve_count)
+        TextView count;
 
         public ViewHolder(View itemView) {
             super(itemView);

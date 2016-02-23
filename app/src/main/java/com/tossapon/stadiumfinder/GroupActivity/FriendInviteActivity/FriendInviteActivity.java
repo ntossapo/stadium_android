@@ -104,6 +104,7 @@ public class FriendInviteActivity extends AppCompatActivity {
                             json.put("toUser", friendsId.get(i));
                             json.put("data", AppUser.getInstance().getName() + " ได้เชิญคุณร่วมเล่นวันที่ " + myReserve.getDate() + " เวลา " + myReserve.getTime_from() + " ที่สนาม " + myReserve.getStadium_name());
                             json.put("fromUser", AppUser.getInstance().getName());
+                            json.put("fromUserId", AppUser.getInstance().getFacebook_id());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
