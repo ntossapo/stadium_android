@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity
     final String[] typesTh = {"ฟุตบอล", "ฟุตซอล", "เทนนิส", "บาสเก็ตบอล", "เทเบิล เทนนิส", "แบดมินตัน"};
     final String[] typesEng = {"soccer", "futsal", "tennis", "basketball", "pingpong", "badminton"};
     String currentSportAsString = "soccer";
-    int currentMode = R.id.nav_playfriend;
+    int currentMode = R.id.nav_quick;
 
     @Bind(R.id.activity_main_toolbar)
     Toolbar toolbar;
@@ -254,10 +254,10 @@ public class MainActivity extends AppCompatActivity
                             Log.d(TAG, "onResponse: เล่นกับเพื่อน" + objects.toString());
 
                         try {
-                            File f = new File(getFilesDir().getPath() + "/blockFriend");
+                            File f = new File(getFilesDir().getPath() + "/blockFriend" + AppUser.getInstance().getFacebook_id());
                             if(!f.exists())
-                                FileUtil.writeFile(getApplicationContext(), "blockFriend", "[]");
-                            String friendsBlocked = FileUtil.readFile(getApplicationContext(), "blockFriend");
+                                FileUtil.writeFile(getApplicationContext(), "blockFriend" + AppUser.getInstance().getFacebook_id(), "[]");
+                            String friendsBlocked = FileUtil.readFile(getApplicationContext(), "blockFriend" + AppUser.getInstance().getFacebook_id());
                             for(int i = 0 ; i < objects.length() ; i++){
                                 if(friendsBlocked.contains(objects.getJSONObject(i).getString("id"))){
                                     Log.d(TAG, "onCompleted: remove friend" + objects.getJSONObject(i).getString("id"));
@@ -286,6 +286,7 @@ public class MainActivity extends AppCompatActivity
                                 mRecyclerView.setHasFixedSize(false);
                                 mRecyclerView.setNestedScrollingEnabled(false);
                                 mLayoutManager = new LinearLayoutManager(MainActivity.this);
+                                Log.d(TAG, "onResponse: "+res.message());
                                 if(res.body().getData().size() == 0)
                                     textStatus.setText("ยังไม่มีใครจองสนามเลย \nคุณลองจองสนามและชวนเพื่อนๆของคุณ");
                                 else

@@ -1,7 +1,6 @@
 package com.tossapon.stadiumfinder.Services;
 
 import android.Manifest;
-import android.app.IntentService;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +15,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.App.LatLngModule;
-import com.tossapon.stadiumfinder.App.SocketIO;
+import com.tossapon.stadiumfinder.Network.LocationSocketIO;
+import com.tossapon.stadiumfinder.Util.FileUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 /**
  * Created by benvo_000 on 20/2/2559.
@@ -38,31 +39,49 @@ public class LocationService extends Service implements LocationListener {
     private LocationManager locationManager;
     private String provider;
     private Location location;
+    private String userId = null;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        try {
+            userId = FileUtil.readFile(getApplicationContext(), "currentUser");
+            Log.d(TAG, "onCreate: " + userId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         provider = locationManager.getBestProvider(criteria, false);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
         location = locationManager.getLastKnownLocation(provider);
         if (location != null) {
             LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
             JSONObject json = new JSONObject();
             try {
-                json.put("user", AppUser.getInstance().getFacebook_id());
+                json.put("user", userId);
                 json.put("lat", location.getLatitude());
                 json.put("lng", location.getLongitude());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            SocketIO.getInstance().emit("location", json.toString());
+            LocationSocketIO.getInstance().emit("location", json.toString());
         }
         Log.d(TAG, "onHandleIntent: start");
         locationManager.requestLocationUpdates(provider, 400, 1, this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager.removeUpdates(this);
     }
 
     @Nullable
@@ -72,17 +91,22 @@ public class LocationService extends Service implements LocationListener {
     }
 
     @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return START_STICKY;
+    }
+
+    @Override
     public void onLocationChanged(Location location) {
         LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
         JSONObject json = new JSONObject();
         try {
-            json.put("user", AppUser.getInstance().getFacebook_id());
+            json.put("user", userId);
             json.put("lat", location.getLatitude());
             json.put("lng", location.getLongitude());
         } catch (JSONException e) {
             Log.d(TAG, "onLocationChanged: ");
         }
-        SocketIO.getInstance().emit("location", json.toString());
+        LocationSocketIO.getInstance().emit("location", json.toString());
         Log.d(TAG, location.getLatitude() + ","+location.getLongitude());
     }
 

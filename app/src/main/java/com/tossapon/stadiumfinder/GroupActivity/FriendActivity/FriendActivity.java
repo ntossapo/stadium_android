@@ -12,6 +12,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.FriendAdapter;
+import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.Model.Facebook.Friend;
 import com.tossapon.stadiumfinder.Util.FileUtil;
 
@@ -59,12 +60,12 @@ public class FriendActivity extends AppCompatActivity {
             for (int i = 0 ; i < fileList().length ; i++)
                 Log.d(TAG, "onCreate: " + fileList()[i]);
 
-        File f = new File(getFilesDir().getPath() + "/blockFriend");
+        File f = new File(getFilesDir().getPath() + "/blockFriend" + AppUser.getInstance().getFacebook_id());
         if (debug)
             Log.d(TAG, "onCreate: " + f.getAbsolutePath());
         if(!f.exists()){
             try {
-                FileUtil.writeFile(getApplicationContext(), "blockFriend", "[]");
+                FileUtil.writeFile(getApplicationContext(), "blockFriend" + AppUser.getInstance().getFacebook_id(), "[]");
                 if(debug)
                     Log.d(TAG, "onCreate: " + "write new file");
             } catch (IOException e) {
@@ -74,7 +75,7 @@ public class FriendActivity extends AppCompatActivity {
         }
 
         try {
-            String stringBlockedFriend = FileUtil.readFile(getApplicationContext(), "blockFriend");
+            String stringBlockedFriend = FileUtil.readFile(getApplicationContext(), "blockFriend" + AppUser.getInstance().getFacebook_id());
             if (debug)
                 Log.d(TAG, "onCreate: read + " + stringBlockedFriend);
             JSONArray jsonArrayBlockedFriend = new JSONArray(stringBlockedFriend);
@@ -123,7 +124,7 @@ public class FriendActivity extends AppCompatActivity {
         if (debug)
             Log.d(TAG, "onBackPressed: " + array.toString());
         try {
-            FileUtil.writeFile(getApplicationContext(), "blockFriend", array.toString());
+            FileUtil.writeFile(getApplicationContext(), "blockFriend"+ AppUser.getInstance().getFacebook_id(), array.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

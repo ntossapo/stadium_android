@@ -17,12 +17,15 @@ import com.tossapon.stadiumfinder.Adapter.FriendInviteAdapter;
 import com.tossapon.stadiumfinder.Api.FacebookServiceInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.Model.Advance.MyReserve;
+import com.tossapon.stadiumfinder.Model.Basic.Reserve;
 import com.tossapon.stadiumfinder.Model.Facebook.Friend;
 import com.tossapon.stadiumfinder.Model.FacebookResponse.FacebookNotificationResponse;
+import com.tossapon.stadiumfinder.Network.NotificationSocketIO;
 import com.tossapon.stadiumfinder.Network.Server;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.io.IOException;
@@ -55,6 +58,7 @@ public class FriendInviteActivity extends AppCompatActivity {
 
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
+    private Reserve reserve;
 
     ArrayList<String> friendsId = new ArrayList<>();
     @Override
@@ -67,7 +71,6 @@ public class FriendInviteActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("ชวนเพื่อน");
 
         myReserve = Parcels.unwrap(getIntent().getParcelableExtra("reserve"));
-
         mRecycler.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(this);
         mRecycler.setLayoutManager(mLayoutManager);
@@ -94,39 +97,20 @@ public class FriendInviteActivity extends AppCompatActivity {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(Server.FacebookGraphApi)
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                FacebookServiceInterface service = retrofit.create(FacebookServiceInterface.class);
                 if(!friendsId.isEmpty()){
                     for(int i = 0 ; i < friendsId.size() ; i++){
-                        Call<FacebookNotificationResponse> call = service.notificate(
-                                friendsId.get(i),
-                                AccessToken.getCurrentAccessToken().getToken(),
-                                "http://www.google.com",
-                                AppUser.getInstance().getName() + "ได้ชวนคุณเข้าร่วมเล่น");
-                        call.enqueue(new Callback<FacebookNotificationResponse>() {
-                            @Override
-                            public void onResponse(Response<FacebookNotificationResponse> response, Retrofit retrofit) {
-                                Log.d(TAG, "onResponse: " + response.message());
-                                Log.d(TAG, "onResponse: " + response.raw().message());
-                                Log.d(TAG, "onResponse: " + response.code());
-                                Log.d(TAG, "onResponse: " + response.isSuccess());
-                                try {
-                                    Log.d(TAG, "onResponse: " + response.errorBody().string());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(Throwable t) {
-
-                            }
-                        });
+                        JSONObject json = new JSONObject();
+                        try {
+                            json.put("toUser", friendsId.get(i));
+                            json.put("data", AppUser.getInstance().getName() + " ได้เชิญคุณร่วมเล่นวันที่ " + myReserve.getDate() + " เวลา " + myReserve.getTime_from() + " ที่สนาม " + myReserve.getStadium_name());
+                            json.put("fromUser", AppUser.getInstance().getName());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        NotificationSocketIO.getInstance().emit("notification_center", json.toString());
                     }
                 }
+                finish();
             }
         });
     }

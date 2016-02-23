@@ -34,7 +34,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
-                        android:text="เช็คอินอัตโนมัติ และข้อมูลที่อยู่อุปกรณ์" />
+                        android:text="ที่อยู่อุปกรณ์" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -43,6 +43,33 @@
                 </LinearLayout>
                 <Switch
                     android:id="@+id/activity_settings_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="0.2">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="แจ้งเตือน" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="อนุญาติให้แอปพลิเคชันแจ้งเตือนคุณ เมื่อเพื่อนๆของคุณจองสนามและชวนคุณเข้าเล่นกับพวกเขา"
+                        android:textSize="12dp"/>
+                </LinearLayout>
+                <Switch
+                    android:id="@+id/activity_settings_notification"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.8"/>

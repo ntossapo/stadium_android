@@ -114,6 +114,7 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
                                     context.startActivity(i);
                                     break;
                                 case cancel :
+
                                     break;
                             }
                         }

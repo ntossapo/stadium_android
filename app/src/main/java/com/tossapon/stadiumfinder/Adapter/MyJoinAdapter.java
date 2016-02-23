@@ -89,16 +89,21 @@ public class MyJoinAdapter extends RecyclerView.Adapter<MyJoinAdapter.ViewHolder
                                             .baseUrl(Server.BASEURL)
                                             .addConverterFactory(GsonConverterFactory.create())
                                             .build();
-
+                                    Log.d(TAG, "onClick: " + dataSet.get(position).getJoinId());
                                     JoinInterface service = retrofit.create(JoinInterface.class);
                                     Call<Response> call = service.deleteJoin(dataSet.get(position).getJoinId());
                                     call.enqueue(new Callback<Response>() {
                                         @Override
                                         public void onResponse(retrofit.Response<Response> response, Retrofit retrofit) {
-                                            Toast.makeText(context, "ลบการเข้าร่วมสำเร็จ", Toast.LENGTH_LONG).show();
-                                            dataSet.remove(position);
-                                            MyJoinAdapter.this.notifyItemRemoved(position);
-                                            Log.d(TAG, "onResponse: " + MyJoinAdapter.this.getItemCount());
+                                            if(response.body().getStatus().equals("ok")) {
+                                                Toast.makeText(context, "ลบการเข้าร่วมสำเร็จ", Toast.LENGTH_LONG).show();
+                                                dataSet.remove(position);
+                                                MyJoinAdapter.this.notifyItemRemoved(position);
+                                                Log.d(TAG, "onResponse: " + MyJoinAdapter.this.getItemCount());
+                                                Log.d(TAG, "onResponse: " + response.body().getStatus());
+                                            }else{
+                                                Toast.makeText(context, response.body().getErr(), Toast.LENGTH_SHORT).show();
+                                            }
                                         }
 
                                         @Override

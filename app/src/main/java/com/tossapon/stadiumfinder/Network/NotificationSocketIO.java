@@ -1,31 +1,26 @@
-package com.tossapon.stadiumfinder.App;
+package com.tossapon.stadiumfinder.Network;
 
 import android.util.Log;
 
-import com.tossapon.stadiumfinder.Network.Server;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
 import java.net.URISyntaxException;
 
-import io.socket.client.IO;
-import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
-
 /**
- * Created by benvo_000 on 16/2/2559.
+ * Created by benvo_000 on 21/2/2559.
  */
-public class SocketIO {
+public class NotificationSocketIO {
     private static Socket ourInstance;
-    private static final String TAG = "SocketIO";
+    private static final String TAG = "NotificationSocketIO";
 
-    public static Socket getInstance()
-    {
+    public static Socket getInstance() {
         if (ourInstance == null){
             try {
-                ourInstance = IO.socket(Server.SOCKETIO);
+                ourInstance = IO.socket(Server.NOTIFICATION_SOCKET);
                 ourInstance.connect();
-                Log.d(TAG, "instance initializer: initial ok" );
             } catch (URISyntaxException e) {
-                Log.d(TAG, "instance initializer: " + e.getMessage());
             }
         }
         ourInstance.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
@@ -40,7 +35,6 @@ public class SocketIO {
                 Log.d(TAG, "call: " + "time out" + args[0]);
             }
         });
-
         return ourInstance;
     }
 }

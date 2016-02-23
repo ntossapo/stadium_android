@@ -90,14 +90,13 @@ public class Splash extends AppCompatActivity{
                     login.animate().start();
                     requestProfile();
 //                    getFriendList();
+
                     sendAuthToServer(
                             loginResult.getAccessToken().getUserId(),
                             loginResult.getAccessToken().getToken(),
                             name,
                             picurl
                     );
-
-
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -130,6 +129,7 @@ public class Splash extends AppCompatActivity{
                 Picasso.with(getApplicationContext()).load(picurl).into(profile);
                 profile.animate().start();
 //                getFriendList();
+
                 sendAuthToServer(
                         AccessToken.getCurrentAccessToken().getUserId(),
                         AccessToken.getCurrentAccessToken().getToken(),
