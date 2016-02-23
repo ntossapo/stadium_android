@@ -1,5 +1,6 @@
 package com.tossapon.stadiumfinder.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
@@ -11,10 +12,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity;
 import com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity;
+import com.tossapon.stadiumfinder.Model.Basic.Reserve;
 import com.tossapon.stadiumfinder.Model.Basic.Stadium;
+import com.tossapon.stadiumfinder.Network.RealTimeStadiumPeopleSocketIO;
 
 import org.parceler.Parcels;
 
@@ -32,10 +37,15 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
     private List<Stadium> dataSet;
     private Context context;
     private String type;
-
-    public ReserveAdapter(List<Stadium> dataSet, String t) {
+    private Activity activity;
+    private boolean[] socketInit;
+    public ReserveAdapter(List<Stadium> dataSet, String t, Activity mainActivity) {
         this.dataSet = dataSet;
         type = t;
+        activity = mainActivity;
+        socketInit = new boolean[dataSet.size()];
+        for(int i = 0; i < socketInit.length; i ++)
+            socketInit[i] = false;
     }
 
     @Override
@@ -48,10 +58,10 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Stadium stadium = dataSet.get(position);
+        final Stadium stadium = dataSet.get(position);
         Picasso.with(context).load(stadium.image).into(holder.image);
         holder.textViewName.setText(stadium.name.length() > 16 ? stadium.name.substring(0, 14) + ".." : stadium.name);
-        holder.count.setText(stadium.count+"");
+        holder.count.setText(stadium.count + "");
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +71,26 @@ public class ReserveAdapter extends RecyclerView.Adapter<ReserveAdapter.ViewHold
                 context.startActivity(i);
             }
         });
+        if(!socketInit[position])
+        RealTimeStadiumPeopleSocketIO.getInstance().on("stadium"+stadium.id, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                String s = (String) args[0];
+                Log.d(TAG, "call: " + s);
+                if(s.equals("-")){
+                    stadium.count = stadium.count - 1;
+                }else if(s.equals("+")){
+                    stadium.count = stadium.count + 1;
+                }
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ReserveAdapter.this.notifyItemChanged(position);
+                    }
+                });
+            }
+        });
+        socketInit[position] = true;
     }
 
     @Override

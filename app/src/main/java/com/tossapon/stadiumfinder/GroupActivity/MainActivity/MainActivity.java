@@ -24,6 +24,7 @@ import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
+import com.github.nkzawa.emitter.Emitter;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.FriendMatchAdapter;
@@ -39,6 +40,7 @@ import com.tossapon.stadiumfinder.GroupActivity.Splash.Splash;
 import com.tossapon.stadiumfinder.Model.Response.AllFriendMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
+import com.tossapon.stadiumfinder.Network.RealTimeStadiumPeopleSocketIO;
 import com.tossapon.stadiumfinder.Network.Server;
 import com.tossapon.stadiumfinder.Util.ExpansiveLayoutManager;
 import com.tossapon.stadiumfinder.Util.FileUtil;
@@ -230,11 +232,13 @@ public class MainActivity extends AppCompatActivity
                             textStatus.setText("ไม่มีข้อมูล");
                         else
                             textStatus.setText("");
-                        mAdapter = new ReserveAdapter(response.body().data, currentSportAsString);
+
+                        mAdapter = new ReserveAdapter(response.body().data, currentSportAsString, MainActivity.this);
                         mRecyclerView.setAdapter(mAdapter);
                         if (debug)
                             Log.d(TAG, "onResponse: จองสนาม " + mAdapter.getItemCount() + " item");
                         dialog.dismiss();
+                        RealTimeStadiumPeopleSocketIO.getInstance().connect();
                     }
                     @Override
                     public void onFailure(Throwable t) {
@@ -345,7 +349,6 @@ public class MainActivity extends AppCompatActivity
                 });
                 break;
         }
-
         progressDialog.dismiss();
     }
 }

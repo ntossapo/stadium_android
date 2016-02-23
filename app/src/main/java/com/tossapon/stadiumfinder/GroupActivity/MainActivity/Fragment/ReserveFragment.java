@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.ReserveAdapter;
+import com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 import com.tossapon.stadiumfinder.Model.Basic.Stadium;
 
@@ -57,7 +58,7 @@ public class ReserveFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new ReserveAdapter(dataSet, type);
+        mAdapter = new ReserveAdapter(dataSet, type, getActivity());
         mRecyclerView.setAdapter(mAdapter);
         return v;
     }
