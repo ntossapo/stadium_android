@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tossapon.projectsport">
+    package="com.tossapon.projectsport"
+    android:versionCode="3"
+    android:versionName="1.0.1">
+
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +31,8 @@
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.Splash.Splash"
             android:label="@string/title_activity_splash"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,20 +46,29 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity" />
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.SelectStadiumActivity" />
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.ConfirmActivity" />
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendInviteActivity.FriendInviteActivity" />
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendActivity.FriendActivity" />
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.SelectStadiumActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.ConfirmActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendInviteActivity.FriendInviteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendActivity.FriendActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity"
             android:label="@string/title_activity_reserve"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.SettingsActivity.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"></activity>
         <service android:name="com.tossapon.stadiumfinder.Services.LocationService" android:exported="false"></service>
         <service android:name="com.tossapon.stadiumfinder.Services.NotificationService" android:exported="false"></service>
     </application>

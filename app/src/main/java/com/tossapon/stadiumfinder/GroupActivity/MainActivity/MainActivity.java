@@ -42,7 +42,6 @@ import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.AllStadiumResponse;
 import com.tossapon.stadiumfinder.Network.RealTimeStadiumPeopleSocketIO;
 import com.tossapon.stadiumfinder.Network.Server;
-import com.tossapon.stadiumfinder.Util.ExpansiveLayoutManager;
 import com.tossapon.stadiumfinder.Util.FileUtil;
 
 import org.json.JSONArray;
@@ -226,7 +225,7 @@ public class MainActivity extends AppCompatActivity
                     public void onResponse(retrofit.Response<AllStadiumResponse> response, Retrofit retrofit) {
                         mRecyclerView.setNestedScrollingEnabled(false);
                         mRecyclerView.setHasFixedSize(false);
-                        mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
+                        mLayoutManager = new LinearLayoutManager(MainActivity.this);
                         mRecyclerView.setLayoutManager(mLayoutManager);
                         if(response.body().data.size() == 0)
                             textStatus.setText("ไม่มีข้อมูล");
@@ -333,7 +332,7 @@ public class MainActivity extends AppCompatActivity
                             textStatus.setText("ยังไม่มีใครจองสนามเลย \nคุณลองจองสนามและรอเพื่อนๆ จอยกับคุณ");
                         else
                             textStatus.setText("");
-                        mLayoutManager = new ExpansiveLayoutManager(MainActivity.this);
+                        mLayoutManager = new LinearLayoutManager(MainActivity.this);
                         mRecyclerView.setLayoutManager(mLayoutManager);
                         mAdapter = new QuickmatchAdapter(response.body().getData());
                         mRecyclerView.setAdapter(mAdapter);

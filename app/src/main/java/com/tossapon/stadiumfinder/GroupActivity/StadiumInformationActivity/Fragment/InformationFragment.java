@@ -54,6 +54,8 @@ public class InformationFragment extends Fragment {
     @Bind(R.id.frag_std_inf_op_time) TextView textViewOpTime;
     @Bind(R.id.frag_std_inf_book) LinearLayout linearLayout;
     @Bind(R.id.frag_std_inf_track_self) LinearLayout trackSelf;
+    @Bind(R.id.frag_std_inf_web_self) LinearLayout webSelf;
+    @Bind(R.id.frag_std_inf_tel_self) LinearLayout telSelf;
 
     private Stadium stadium;
     private GoogleMap mMap;
@@ -100,6 +102,25 @@ public class InformationFragment extends Fragment {
                 startActivity(mapIntent);
             }
         });
+
+        telSelf.setOnClickListener(new View.OnClickListener(){
+           @Override
+            public void onClick(View v){
+               Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + stadium.tel));
+               startActivity(intent);
+           }
+        });
+
+        webSelf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = stadium.link;
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+
         textViewTrack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,7 +185,7 @@ public class InformationFragment extends Fragment {
             public void onResponse(Response<StadiumDetailResponse> response, Retrofit retrofit) {
                 StadiumDetailResponse res = response.body();
 //                Log.d(TAG, String.valueOf(res.data.price.max));
-                textViewRate.setText(res.data.price.min + " - " + res.data.price.max + " ต่อ ชม.");
+                textViewRate.setText(res.data.price.min + " - " + res.data.price.max);
             }
 
             @Override

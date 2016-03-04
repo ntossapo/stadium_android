@@ -33,6 +33,7 @@ import com.tossapon.stadiumfinder.Model.Advance.MyReserve;
 import com.tossapon.stadiumfinder.Model.FacebookResponse.FacebookNotificationResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
+import com.tossapon.stadiumfinder.Util.DateUtil;
 
 import org.json.JSONArray;
 import org.parceler.Parcels;
@@ -63,6 +64,7 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
     private SimpleDateFormat timeHHmmss = new SimpleDateFormat("HH:mm:ss");
     private SimpleDateFormat timeHHmm = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat dateYYYYMMDD = new SimpleDateFormat("yyyy-MM-dd");
+    private SimpleDateFormat dateYYYYMMDDTimeHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Calendar calendar = Calendar.getInstance();
     private static final int invite = 0;
     private static final int cancel = 1;
@@ -93,13 +95,16 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
                 Picasso.with(context).load(R.drawable.cancel10).into(holder.image);
             }
             timeFrom = timeHHmmss.parse(dataSet.get(position).getTime_from());
-            date = dateYYYYMMDD.parse(dataSet.get(position).getDate());
+            date = dateYYYYMMDDTimeHHmmss.parse(dataSet.get(position).getDate() + " " + dataSet.get(position).getTime_from());
             reserveDate.setTime(date);
-            Log.d(TAG, "onBindViewHolder: " + reserveDate.get(Calendar.YEAR) + " " + calendar.get(Calendar.YEAR));
-            long diff = (reserveDate.getTime().getTime() - calendar.getTime().getTime())/ (24 * 60 * 60 * 1000);
+
+//            long diff = (reserveDate.getTime().getTime() - calendar.getTime().getTime())/ (24 * 60 * 60 * 1000);
+            long diff = DateUtil.dateDiff(calendar.getTime(), reserveDate.getTime());
+            Log.d(TAG, "onBindViewHolder: " + dateYYYYMMDD.format(reserveDate.getTime()) + " " + dateYYYYMMDD.format(calendar.getTime()));
+            Log.d(TAG, "onBindViewHolder: diff " + diff);
 
 
-            holder.time.setText(timeHHmm.format(timeFrom) + "\n"  + (diff==0?"วันนี้" : "อีก " + diff  + " วัน"));
+            holder.time.setText(timeHHmm.format(timeFrom) + "\n"  + (diff==0 ? "วันนี้" : "อีก " + diff  + " วัน"));
             holder.header.setText("คุณได้จองสนามที่ " + dataSet.get(position).getStadium_name() +
                             " \nสนาม " + dataSet.get(position).getField_name() +
                             "\nวันที่ " + dataSet.get(position).getDate()

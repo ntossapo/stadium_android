@@ -59,7 +59,6 @@ public class StadiumInformationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Picasso.with(StadiumInformationActivity.this).load(data.image).into(imageView);
         collapsingToolbarLayout.setTitle(data.name);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             viewPager.setNestedScrollingEnabled(false);
