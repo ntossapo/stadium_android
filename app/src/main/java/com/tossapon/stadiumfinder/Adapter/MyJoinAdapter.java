@@ -98,6 +98,7 @@ public class MyJoinAdapter extends RecyclerView.Adapter<MyJoinAdapter.ViewHolder
                                                 Toast.makeText(context, "ลบการเข้าร่วมสำเร็จ", Toast.LENGTH_LONG).show();
                                                 dataSet.remove(position);
                                                 MyJoinAdapter.this.notifyItemRemoved(position);
+                                                MyJoinAdapter.this.notifyDataSetChanged();
                                                 Log.d(TAG, "onResponse: " + MyJoinAdapter.this.getItemCount());
                                                 Log.d(TAG, "onResponse: " + response.body().getStatus());
                                             }else{

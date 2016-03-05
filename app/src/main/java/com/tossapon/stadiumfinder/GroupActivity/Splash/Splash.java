@@ -3,7 +3,6 @@ package com.tossapon.stadiumfinder.GroupActivity.Splash;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,28 +22,15 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
-import com.tossapon.stadiumfinder.Adapter.FriendAdapter;
 import com.tossapon.stadiumfinder.Api.AuthInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
-import com.tossapon.stadiumfinder.Model.Facebook.Friend;
 import com.tossapon.stadiumfinder.Model.Response.AuthResponse;
 import com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity;
 import com.tossapon.stadiumfinder.Network.Server;
-import com.tossapon.stadiumfinder.Util.FileUtil;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -79,7 +65,7 @@ public class Splash extends AppCompatActivity{
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_splash2);
         ButterKnife.bind(this);
-
+        AccessToken.refreshCurrentAccessTokenAsync();
         login.animate().alpha(0.0f);
 
         callbackManager = CallbackManager.Factory.create();
@@ -91,7 +77,7 @@ public class Splash extends AppCompatActivity{
                     requestProfile();
 //                    getFriendList();
 
-                    sendAuthToServer(
+                    sendAuthToServerWithDelay(
                             loginResult.getAccessToken().getUserId(),
                             loginResult.getAccessToken().getToken(),
                             name,
@@ -165,7 +151,7 @@ public class Splash extends AppCompatActivity{
 //        request.executeAsync();
 //    }
 
-    private void sendAuthToServer(String userId, String token, String name, String picurl) {
+    private void sendAuthToServerWithDelay(String userId, String token, String name, String picurl) {
         Retrofit client = new Retrofit.Builder()
                 .baseUrl(Server.BASEURL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -188,9 +174,7 @@ public class Splash extends AppCompatActivity{
                     (Executors.newSingleThreadScheduledExecutor()).schedule(new Runnable() {
                         @Override
                         public void run() {
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(i);
-                            finish();
+                            startMainActivity();
                         }
                     }, 4, TimeUnit.SECONDS);
                 }
@@ -206,6 +190,48 @@ public class Splash extends AppCompatActivity{
                     Log.d(TAG, "onFailure: " + t.getMessage());
             }
         });
+    }
+
+    private void sendAuthToServer(String userId, String token, String name, String picurl) {
+        Retrofit client = new Retrofit.Builder()
+                .baseUrl(Server.BASEURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        AuthInterface service = client.create(AuthInterface.class);
+        Call<AuthResponse> call = service.Auth(
+                userId,
+                token,
+                name,
+                picurl
+        );
+        call.enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(retrofit.Response<AuthResponse> response, Retrofit retrofit) {
+                if(debug)
+                    Log.d(TAG, "onResponse: " + response.message());
+                if (response.body().getStatus().equals("ok")) {
+                    Snackbar.make(coordinatorLayout, "การยืนยันตัวตนเรียบร้อย กำลังนำท่านเข้าสู่ Stadium Finder", Snackbar.LENGTH_LONG).show();
+                    AppUser.setInstance(response.body().getData());
+                    startMainActivity();
+                }
+
+                if (debug)
+                    Log.d(TAG, "onResponse: " + response.body().getStatus());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Snackbar.make(coordinatorLayout, t.getMessage(), Snackbar.LENGTH_LONG).show();
+                if(debug)
+                    Log.d(TAG, "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    private void startMainActivity() {
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+        finish();
     }
 
     @Override

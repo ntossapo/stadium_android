@@ -10,6 +10,7 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.FriendAdapter;
 import com.tossapon.stadiumfinder.App.AppUser;
@@ -91,20 +92,21 @@ public class FriendActivity extends AppCompatActivity {
 
 
         GraphRequest request = GraphRequest.newMyFriendsRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONArrayCallback() {
-            @Override
-            public void onCompleted(JSONArray objects, GraphResponse response) {
-                Log.d(TAG, "onCompleted: " + objects.toString());
-                ArrayList<Friend> friends = new ArrayList<>();
-                for (int i = 0; i < objects.length(); i++) {
-                    try {
-                        friends.add(new Friend(objects.getJSONObject(i)));
-                    } catch (JSONException e) {
+                    @Override
+                    public void onCompleted(JSONArray objects, GraphResponse response) {
+                        Log.d(TAG, "onCompleted: " + objects.toString());
+                        ArrayList<Friend> friends = new ArrayList<>();
+                        for (int i = 0; i < objects.length(); i++) {
+                            try {
+                                friends.add(new Friend(objects.getJSONObject(i)));
+                            } catch (JSONException e) {
+                            }
+                        }
+                        mAdapter = new FriendAdapter(friends, arrayListBlockedFriend);
+                        mRecyclerView.setAdapter(mAdapter);
                     }
                 }
-                mAdapter = new FriendAdapter(friends, arrayListBlockedFriend);
-                mRecyclerView.setAdapter(mAdapter);
-            }
-        });
+        );
         setParameter(request);
         request.executeAsync();
     }

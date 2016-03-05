@@ -101,6 +101,7 @@ public class FriendMatchAdapter extends RecyclerView.Adapter<FriendMatchAdapter.
                                                 Toast.makeText(context, "คุณได้เข้าร่วมการเล่นแล้ว", Toast.LENGTH_SHORT).show();
                                                 dataSet.remove(position);
                                                 FriendMatchAdapter.this.notifyItemRemoved(position);
+                                                FriendMatchAdapter.this.notifyDataSetChanged();
                                             }else
                                                 Toast.makeText(context, response.body().getErr(), Toast.LENGTH_SHORT).show();
                                         }
