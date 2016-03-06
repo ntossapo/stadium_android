@@ -5,4 +5,14 @@
         <item name="android:textSize">18dp</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#009688</item>
+        <item name="colorPrimaryDark">#00897B</item>
+        <item name="colorAccent">#009688</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="homeAsUpIndicator">@color/white</item>
+    </style>
 </resources>

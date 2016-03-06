@@ -57,6 +57,7 @@ public class FriendActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("เพื่อน");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (debug)
             for (int i = 0 ; i < fileList().length ; i++)
                 Log.d(TAG, "onCreate: " + fileList()[i]);
@@ -109,6 +110,12 @@ public class FriendActivity extends AppCompatActivity {
         );
         setParameter(request);
         request.executeAsync();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private void setParameter(GraphRequest request) {

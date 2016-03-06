@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.MyReserveAdapter;
@@ -59,6 +60,25 @@ public class MyReserveActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("เล่น");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public class SectionPagerAdapter extends FragmentPagerAdapter{

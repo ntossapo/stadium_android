@@ -55,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity{
         toolbar.setTitle("ตั้งค่า");
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         locatingSwitch.setChecked(isMyServiceRunning(LocationService.class));
         locatingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -63,6 +63,7 @@ public class SettingsActivity extends AppCompatActivity{
                 Intent i = new Intent(SettingsActivity.this, LocationService.class);
                 if (isChecked) {
                     try {
+
                         FileUtil.writeFile(getApplicationContext(), "currentUser", AppUser.getInstance().getFacebook_id());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -92,6 +93,12 @@ public class SettingsActivity extends AppCompatActivity{
                 }
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
