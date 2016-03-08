@@ -66,10 +66,11 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
     private SimpleDateFormat dateYYYYMMDD = new SimpleDateFormat("yyyy-MM-dd");
     private SimpleDateFormat dateYYYYMMDDTimeHHmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private Calendar calendar = Calendar.getInstance();
-    private static final int invite = 0;
-    private static final int cancel = 1;
+    private static final int checkin = 0;
+    private static final int invite = 1;
+    private static final int cancel = 2;
 
-    String[] itemServices = {"ชวนเพื่อน", "ยกเลิกการจอง"};
+    String[] itemServices = {"เช็คอิน เข้าเล่น", "ชวนเพื่อน", "ยกเลิกการจอง"};
 
     public MyReserveAdapter(List<MyReserve> dataSet) {
         this.dataSet = dataSet;
@@ -118,6 +119,9 @@ public class MyReserveAdapter extends RecyclerView.Adapter<MyReserveAdapter.View
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
+                                case checkin :
+                                    
+                                    break;
                                 case invite :
                                     Intent i = new Intent(context, FriendInviteActivity.class);
                                     i.putExtra("reserve", Parcels.wrap(dataSet.get(position)));

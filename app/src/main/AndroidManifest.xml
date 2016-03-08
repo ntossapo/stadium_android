@@ -63,8 +63,7 @@
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity"
             android:label="@string/title_activity_reserve"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.SettingsActivity.SettingsActivity"
             android:label="@string/title_activity_settings"
