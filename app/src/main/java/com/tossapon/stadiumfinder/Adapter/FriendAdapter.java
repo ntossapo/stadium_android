@@ -1,6 +1,7 @@
 package com.tossapon.stadiumfinder.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.GroupActivity.FriendStatActivity.FriendStatActivity;
 import com.tossapon.stadiumfinder.Model.Facebook.Friend;
 
 import org.json.JSONArray;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +56,9 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         else
             holder.checkbox.setChecked(true);
 
-        holder.self.setOnClickListener(new View.OnClickListener() {
+        holder.self.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onLongClick(View v) {
                 if(holder.checkbox.isChecked()) {
                     holder.checkbox.setChecked(false);
                     arrayListBlockedFriend.add(dataSet.get(position).getId());
@@ -63,6 +66,16 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
                     holder.checkbox.setChecked(true);
                     arrayListBlockedFriend.remove(dataSet.get(position).getId());
                 }
+                return true;
+            }
+        });
+
+        holder.self.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(context, FriendStatActivity.class);
+                i.putExtra("friend", Parcels.wrap(dataSet.get(position)));
+                context.startActivity(i);
             }
         });
     }

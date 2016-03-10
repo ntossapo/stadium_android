@@ -6,11 +6,11 @@
         <item
             android:id="@+id/nav_quick"
             android:icon="@drawable/quick32"
-            android:title="เล่นตอนนี้" />
+            android:title="ค้นหาแมชต์ทั่วไป" />
         <item
             android:id="@+id/nav_playfriend"
             android:icon="@drawable/play32"
-            android:title="เล่นกับเพื่อน" />
+            android:title="ค้นหาแมชต์ของเพื่อน" />
         <item
             android:id="@+id/nav_reserve"
             android:icon="@drawable/reserve32"
@@ -22,7 +22,7 @@
             <item
                 android:id="@+id/nav_my"
                 android:icon="@drawable/media23"
-                android:title="เล่น" />
+                android:title="การจองสนามและการเข้าร่วม" />
             <item
                 android:id="@+id/nav_friend"
                 android:icon="@drawable/friend32"

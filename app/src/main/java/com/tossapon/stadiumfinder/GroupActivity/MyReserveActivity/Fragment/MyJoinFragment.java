@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.MyJoinAdapter;
@@ -33,6 +34,8 @@ public class MyJoinFragment extends Fragment {
     private static final String TAG = "MyJoinFragment";
     @Bind(R.id.fragment_myjoin_recycler)
     RecyclerView mRecycler;
+    @Bind(R.id.fragment_myjoin_tv)
+    TextView textView;
 
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -63,6 +66,10 @@ public class MyJoinFragment extends Fragment {
             public void onResponse(Response<MyJoinResponse> response, Retrofit retrofit) {
                 Log.d(TAG, "onResponse: " + response.message());
                 mAdapter = new MyJoinAdapter(response.body().getData());
+                if(mAdapter.getItemCount() == 0)
+                    textView.setVisibility(View.VISIBLE);
+                else
+                    textView.setVisibility(View.INVISIBLE);
                 mRecycler.setAdapter(mAdapter);
             }
 

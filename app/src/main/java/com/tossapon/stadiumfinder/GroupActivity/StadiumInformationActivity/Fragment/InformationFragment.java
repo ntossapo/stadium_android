@@ -1,5 +1,7 @@
 package com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.Fragment;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,10 +23,14 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tossapon.projectsport.R;
+import com.tossapon.stadiumfinder.Api.BacklistInterface;
 import com.tossapon.stadiumfinder.Api.GoogleServiceInterface;
+import com.tossapon.stadiumfinder.Api.ReserveInterface;
 import com.tossapon.stadiumfinder.Api.StadiumInterface;
+import com.tossapon.stadiumfinder.App.AppUser;
 import com.tossapon.stadiumfinder.App.LatLngModule;
 import com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity;
+import com.tossapon.stadiumfinder.Model.Basic.Reserve;
 import com.tossapon.stadiumfinder.Model.Basic.Stadium;
 import com.tossapon.stadiumfinder.Model.Response.GoogleRoutingResponse;
 import com.tossapon.stadiumfinder.Model.Response.StadiumDetailResponse;
@@ -86,10 +93,38 @@ public class InformationFragment extends Fragment {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getContext(), PreReserveActivity.class);
-                i.putExtra("stadium", Parcels.wrap(stadium));
-                i.putExtra("type", type);
-                startActivity(i);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(Server.BASEURL)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                BacklistInterface service = retrofit.create(BacklistInterface.class);
+                Call<com.tossapon.stadiumfinder.Model.Response.Response> call = service.CheckAvailableToReserve(AppUser.getInstance().getFacebook_id());
+                final ProgressDialog dialog;
+                dialog = ProgressDialog.show(getContext(), "", "กำลังโหลดข้อมูล", true);
+                call.enqueue(new Callback<com.tossapon.stadiumfinder.Model.Response.Response>() {
+                    @Override
+                    public void onResponse(retrofit.Response<com.tossapon.stadiumfinder.Model.Response.Response> response, Retrofit retrofit) {
+                        com.tossapon.stadiumfinder.Model.Response.Response res = response.body();
+                        if(res.getStatus() != null){
+                            if(res.getStatus().equals("ok")){
+                                Intent i = new Intent(getContext(), PreReserveActivity.class);
+                                i.putExtra("stadium", Parcels.wrap(stadium));
+                                i.putExtra("type", type);
+                                startActivity(i);
+                                dialog.dismiss();
+                            }else{
+                                Toast.makeText(getContext(), res.getErr(), Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                    }
+                });
             }
         });
 

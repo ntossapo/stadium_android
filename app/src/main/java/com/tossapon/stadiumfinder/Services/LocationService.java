@@ -23,6 +23,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by benvo_000 on 20/2/2559.
@@ -40,11 +43,10 @@ public class LocationService extends Service implements LocationListener {
     private String provider;
     private Location location;
     private String userId = null;
-
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     @Override
     public void onCreate() {
         super.onCreate();
-
         try {
             userId = FileUtil.readFile(getApplicationContext(), "currentUser");
             Log.d(TAG, "onCreate: " + userId);
@@ -59,6 +61,7 @@ public class LocationService extends Service implements LocationListener {
         }
 
         location = locationManager.getLastKnownLocation(provider);
+        Calendar calendar = Calendar.getInstance();
         if (location != null) {
             LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
             JSONObject json = new JSONObject();
@@ -66,6 +69,7 @@ public class LocationService extends Service implements LocationListener {
                 json.put("user", userId);
                 json.put("lat", location.getLatitude());
                 json.put("lng", location.getLongitude());
+                json.put("date", simpleDateFormat.format(calendar.getTime()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -99,10 +103,13 @@ public class LocationService extends Service implements LocationListener {
     public void onLocationChanged(Location location) {
         LatLngModule.newInstance(location.getLatitude(), location.getLongitude());
         JSONObject json = new JSONObject();
+        Calendar calendar = Calendar.getInstance();
+
         try {
             json.put("user", userId);
             json.put("lat", location.getLatitude());
             json.put("lng", location.getLongitude());
+            json.put("date", simpleDateFormat.format(calendar.getTime()));
         } catch (JSONException e) {
             Log.d(TAG, "onLocationChanged: ");
         }

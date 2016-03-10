@@ -63,6 +63,8 @@ public class Splash extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
+
+
         setContentView(R.layout.activity_splash2);
         ButterKnife.bind(this);
         AccessToken.refreshCurrentAccessTokenAsync();

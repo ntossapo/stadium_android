@@ -64,8 +64,8 @@ public class MyJoinAdapter extends RecyclerView.Adapter<MyJoinAdapter.ViewHolder
         Date timeForm;
         Date date;
         final Calendar joinDate = Calendar.getInstance();
-        Picasso.with(context).load(dataSet.get(position).getReserverImage()).into(holder.image);
-
+        Picasso.with(context).load(dataSet.get(position).getReserverimage()).into(holder.image);
+        Log.d(TAG, "onBindViewHolder: " + dataSet.get(position).getReserverimage());
         try {
             timeForm = timeHHmmss.parse(dataSet.get(position).getTime_from());
             date = dateYYYYMMDD.parse(dataSet.get(position).getDate());

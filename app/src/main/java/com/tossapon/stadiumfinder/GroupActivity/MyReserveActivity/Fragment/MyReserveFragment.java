@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.MyReserveAdapter;
@@ -36,6 +37,8 @@ public class MyReserveFragment extends Fragment {
 
     @Bind(R.id.fragment_myreserve_recycler)
     RecyclerView mRecycler;
+    @Bind(R.id.fragment_myreserve_tv)
+    TextView textView;
 
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
@@ -62,6 +65,10 @@ public class MyReserveFragment extends Fragment {
             public void onResponse(Response<MyReserveResponse> response, Retrofit retrofit) {
                 mAdapter = new MyReserveAdapter(response.body().getData());
                 mRecycler.setAdapter(mAdapter);
+                if(mAdapter.getItemCount() == 0)
+                    textView.setVisibility(View.VISIBLE);
+                else
+                    textView.setVisibility(View.INVISIBLE);
             }
 
             @Override

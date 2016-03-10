@@ -4,7 +4,6 @@
     android:versionCode="3"
     android:versionName="1.0.1">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -31,8 +30,8 @@
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.Splash.Splash"
             android:label="@string/title_activity_splash"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,20 +45,26 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.MainActivity.MainActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.SelectStadiumActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.ConfirmActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendInviteActivity.FriendInviteActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendActivity.FriendActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.tossapon.stadiumfinder.GroupActivity.StadiumInformationActivity.StadiumInformationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.SelectStadiumActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.ConfirmActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tossapon.stadiumfinder.GroupActivity.FriendInviteActivity.FriendInviteActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tossapon.stadiumfinder.GroupActivity.FriendActivity.FriendActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tossapon.stadiumfinder.GroupActivity.MyReserveActivity.MyReserveActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.ReserveActivity.PreReserveActivity"
             android:label="@string/title_activity_reserve"
@@ -67,9 +72,17 @@
         <activity
             android:name="com.tossapon.stadiumfinder.GroupActivity.SettingsActivity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:screenOrientation="portrait"></activity>
-        <service android:name="com.tossapon.stadiumfinder.Services.LocationService" android:exported="false"></service>
-        <service android:name="com.tossapon.stadiumfinder.Services.NotificationService" android:exported="false"></service>
+            android:screenOrientation="portrait" />
+
+        <service
+            android:name="com.tossapon.stadiumfinder.Services.LocationService"
+            android:exported="false" />
+        <service
+            android:name="com.tossapon.stadiumfinder.Services.NotificationService"
+            android:exported="false" />
+
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendStatActivity.FriendStatActivity" />
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.MatchDetailActivity.MatchDetailActivity"></activity>
     </application>
 
 </manifest>

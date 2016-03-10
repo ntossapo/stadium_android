@@ -3,6 +3,7 @@ package com.tossapon.stadiumfinder.Adapter;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +19,14 @@ import com.tossapon.projectsport.R;
 import com.tossapon.stadiumfinder.Adapter.QuickmatchAdapter.ViewHolder;
 import com.tossapon.stadiumfinder.Api.QuickInterface;
 import com.tossapon.stadiumfinder.App.AppUser;
+import com.tossapon.stadiumfinder.GroupActivity.MatchDetailActivity.MatchDetailActivity;
 import com.tossapon.stadiumfinder.Model.Advance.QuickMatch;
 import com.tossapon.stadiumfinder.Model.Basic.User;
 import com.tossapon.stadiumfinder.Model.Response.AllQuickMatchResponse;
 import com.tossapon.stadiumfinder.Model.Response.Response;
 import com.tossapon.stadiumfinder.Network.Server;
+
+import org.parceler.Parcels;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -84,6 +88,15 @@ public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
                 userString = "ยังไม่มีใครเข้าร่วม";
             }
             holder.friend.setText(userString);
+            holder.cardview.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Intent i = new Intent(context, MatchDetailActivity.class);
+                    i.putExtra("match", Parcels.wrap(dataSet.get(position)));
+                    context.startActivity(i);
+                    return true;
+                }
+            });
 
             holder.cardview.setOnClickListener(new View.OnClickListener() {
                 @Override

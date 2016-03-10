@@ -57,6 +57,7 @@ public class StadiumInformationActivity extends AppCompatActivity {
         type = getIntent().getExtras().getString("type");
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Picasso.with(StadiumInformationActivity.this).load(data.image).into(imageView);
         collapsingToolbarLayout.setTitle(data.name);
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -95,5 +96,11 @@ public class StadiumInformationActivity extends AppCompatActivity {
             }
             return null;
         }
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

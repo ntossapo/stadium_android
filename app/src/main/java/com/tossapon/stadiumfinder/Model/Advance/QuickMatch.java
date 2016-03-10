@@ -14,27 +14,29 @@ import java.util.List;
 @Parcel
 public class QuickMatch extends Reserve {
 
-    String stadiumName;
+    String stadiumname;
     double latitude;
     double longitude;
-    String fieldName;
+    String fieldname;
     int isjoin;
     String image;
     String username;
     List<User> user;
 
-    @ParcelConstructor
-    public QuickMatch(int id, int match_id, String date, String time_from, String time_to, int isConfirm, String stadiumName, double latitude, double longitude, String fieldName, int isjoin, String image, String username, List<User> user) {
+    public QuickMatch(int id, int match_id, String date, String time_from, String time_to, int isConfirm, String stadiumname, double latitude, double longitude, String fieldname, int isjoin, String image, String username, List<User> user) {
         super(id, match_id, date, time_from, time_to, isConfirm);
-        this.stadiumName = stadiumName;
+        this.stadiumname = stadiumname;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.fieldName = fieldName;
+        this.fieldname = fieldname;
         this.isjoin = isjoin;
         this.image = image;
         this.username = username;
         this.user = user;
     }
+
+    @ParcelConstructor
+
 
     public QuickMatch(int id, int match_id, String date, String time_from, String time_to, int isConfirm) {
         super(id, match_id, date, time_from, time_to, isConfirm);
@@ -48,8 +50,8 @@ public class QuickMatch extends Reserve {
         return image;
     }
 
-    public String getStadiumName() {
-        return stadiumName;
+    public String getStadiumname() {
+        return stadiumname;
     }
 
     public double getLatitude() {
@@ -60,8 +62,8 @@ public class QuickMatch extends Reserve {
         return longitude;
     }
 
-    public String getFieldName() {
-        return fieldName;
+    public String getFieldname() {
+        return fieldname;
     }
 
     public int getIsjoin() {
