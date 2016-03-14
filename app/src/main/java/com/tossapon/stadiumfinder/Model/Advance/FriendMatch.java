@@ -14,10 +14,10 @@ import java.util.List;
 @Parcel
 public class FriendMatch extends Reserve {
 
-    String stadiumName;
+    String stadiumname;
     double latitude;
     double longitude;
-    String fieldName;
+    String fieldname;
     String image;
     String username;
     List<User> user;
@@ -25,13 +25,14 @@ public class FriendMatch extends Reserve {
     public FriendMatch(int id, int match_id, String date, String time_from, String time_to, int isConfirm) {
         super(id, match_id, date, time_from, time_to, isConfirm);
     }
+
     @ParcelConstructor
-    public FriendMatch(int id, int match_id, String date, String time_from, String time_to, int isConfirm, String stadiumName, double latitude, double longitude, String fieldName, String image, String username, List<User> user) {
+    public FriendMatch(int id, int match_id, String date, String time_from, String time_to, int isConfirm, String stadiumname, double latitude, double longitude, String fieldname, String image, String username, List<User> user) {
         super(id, match_id, date, time_from, time_to, isConfirm);
-        this.stadiumName = stadiumName;
+        this.stadiumname = stadiumname;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.fieldName = fieldName;
+        this.fieldname = fieldname;
         this.image = image;
         this.username = username;
         this.user = user;
@@ -41,8 +42,8 @@ public class FriendMatch extends Reserve {
         return username;
     }
 
-    public String getStadiumName() {
-        return stadiumName;
+    public String getStadiumname() {
+        return stadiumname;
     }
 
     public double getLatitude() {
@@ -53,8 +54,8 @@ public class FriendMatch extends Reserve {
         return longitude;
     }
 
-    public String getFieldName() {
-        return fieldName;
+    public String getFieldname() {
+        return fieldname;
     }
 
     public String getImage() {

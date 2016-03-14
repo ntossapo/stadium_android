@@ -7,37 +7,46 @@
     android:layout_height="match_parent"
     android:background="#009688"
     android:layout_width="match_parent">
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:background="@drawable/bg"
-        tools:context=".GroupActivity.Splash.Splash">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/splash_logo"
-            android:text="Stadium Finder"
-            android:textColor="#FFFFFF"
-            android:layout_centerVertical="true"
-            android:textSize="40dp"
-            android:gravity="center"
-            android:layout_centerHorizontal="true" />
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="140dp"
-            android:layout_height="140dp"
-            android:id="@+id/splash_profile"
-            android:layout_alignTop="@+id/splash_logo"
-            android:layout_centerHorizontal="true" />
-        <com.facebook.login.widget.LoginButton
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:layout_marginBottom="87dp"
-            android:background="#0000897B"
-            style="@style/FacebookLoginButton"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/splash_login_button"
-            android:layout_centerHorizontal="true">
-        </com.facebook.login.widget.LoginButton>
-    </RelativeLayout>
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bgg"
+            android:scaleType="centerCrop"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            tools:context=".GroupActivity.Splash.Splash">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/splash_logo"
+                android:text="Stadium Finder"
+                android:textColor="#FFFFFF"
+                android:layout_centerVertical="true"
+                android:textSize="40dp"
+                android:gravity="center"
+                android:layout_centerHorizontal="true" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:id="@+id/splash_profile"
+                android:layout_alignTop="@+id/splash_logo"
+                android:layout_centerHorizontal="true" />
+            <com.facebook.login.widget.LoginButton
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_marginBottom="87dp"
+                android:background="#0000897B"
+                style="@style/FacebookLoginButton"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/splash_login_button"
+                android:layout_centerHorizontal="true">
+            </com.facebook.login.widget.LoginButton>
+        </RelativeLayout>
+
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

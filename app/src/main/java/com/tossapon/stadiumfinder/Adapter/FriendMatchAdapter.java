@@ -89,6 +89,7 @@ public class FriendMatchAdapter extends RecyclerView.Adapter<FriendMatchAdapter.
                 @Override
                 public boolean onLongClick(View v) {
                     Intent i = new Intent(context, MatchDetailActivity.class);
+                    i.putExtra("type", "friend");
                     i.putExtra("match", Parcels.wrap(dataSet.get(position)));
                     context.startActivity(i);
                     return true;

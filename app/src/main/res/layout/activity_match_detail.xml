@@ -125,19 +125,93 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="12dp">
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="0.2"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/user_128"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="6dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="12dp"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="#000000"
+                            android:textSize="16dp"
+                            android:textStyle="bold"
+                            android:text="จองโดย"/>
+                        <TextView
+                            android:id="@+id/activity_match_detail_reserver"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.6"
+                            android:text="0950764133"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
+                    <ImageView
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_weight="0.2"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/pin_128"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="6dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="12dp"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:text="สนาม"/>
+                        <TextView
+                            android:id="@+id/activity_match_detail_field"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.6"
+                            android:textSize="12dp"
+                            android:text="0950764133"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="6dp">
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp">
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:text="ยังไม่มีคนเข้าร่วม"
                     android:id="@+id/activity_match_detail_noplayer"
                     android:gravity="center"/>
                 <android.support.v7.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:id="@+id/activity_match_detail_joiner">
                 </android.support.v7.widget.RecyclerView>
             </FrameLayout>

@@ -92,6 +92,7 @@ public class QuickmatchAdapter extends RecyclerView.Adapter<ViewHolder> {
                 @Override
                 public boolean onLongClick(View v) {
                     Intent i = new Intent(context, MatchDetailActivity.class);
+                    i.putExtra("type", "quick");
                     i.putExtra("match", Parcels.wrap(dataSet.get(position)));
                     context.startActivity(i);
                     return true;

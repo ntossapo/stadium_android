@@ -48,7 +48,7 @@ public class FieldAdapter  extends RecyclerView.Adapter<FieldAdapter.ViewHolder>
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.tv.setText("เลือกสนาม " + dataSet.get(position).getName());
+        holder.tv.setText("เลือกสนาม " + dataSet.get(position).getName() + " " + dataSet.get(position).getAvgprice() + " ต่อชั่วโมง");
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

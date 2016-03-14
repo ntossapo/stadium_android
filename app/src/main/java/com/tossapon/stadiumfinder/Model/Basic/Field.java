@@ -12,13 +12,26 @@ public class Field {
     String name;
     int stadium_id;
     String type;
+    float avgprice;
 
-    @ParcelConstructor
     public Field(int id, String name, int stadium_id, String type) {
         this.id = id;
         this.name = name;
         this.stadium_id = stadium_id;
         this.type = type;
+    }
+
+    @ParcelConstructor
+    public Field(int id, String name, int stadium_id, String type, float avgprice) {
+        this.id = id;
+        this.name = name;
+        this.stadium_id = stadium_id;
+        this.type = type;
+        this.avgprice = avgprice;
+    }
+
+    public float getAvgprice() {
+        return avgprice;
     }
 
     public int getId() {

@@ -82,7 +82,8 @@
             android:exported="false" />
 
         <activity android:name="com.tossapon.stadiumfinder.GroupActivity.FriendStatActivity.FriendStatActivity" />
-        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.MatchDetailActivity.MatchDetailActivity"></activity>
+        <activity android:name="com.tossapon.stadiumfinder.GroupActivity.MatchDetailActivity.MatchDetailActivity" android:theme="@style/AppTheme"></activity>
+
     </application>
 
 </manifest>

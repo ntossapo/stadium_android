@@ -2,6 +2,7 @@ package com.tossapon.stadiumfinder.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by benvo_000 on 10/3/2559.
  */
 public class FriendMiniAdapter extends RecyclerView.Adapter<FriendMiniAdapter.ViewHolder>{
+    private static final String TAG = "FriendMiniAdapter";
     private Context context;
     private List<User> dataSet;
 
@@ -39,6 +41,7 @@ public class FriendMiniAdapter extends RecyclerView.Adapter<FriendMiniAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d(TAG, "onBindViewHolder: " + dataSet.get(position).getPicurl() + " " + dataSet.get(position).getFacebook_id());
         Picasso.with(context).load(dataSet.get(position).getPicurl()).into(holder.circleImage);
         holder.textViewName.setText(dataSet.get(position).getName());
     }
